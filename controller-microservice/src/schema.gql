@@ -1,0 +1,161 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Category {
+  id: Int!
+  name: String!
+}
+
+input ConfirmNewPasswordInput {
+  password: String!
+  token: String!
+}
+
+input CreateProjectInput {
+  """Project's avatar"""
+  avatar: Upload
+  category_id: Int!
+  description: String
+
+  """Project's files"""
+  files: [Upload!]
+  price: Float!
+
+  """Name ai source"""
+  source: String
+
+  """If tag does not exist, it will be created"""
+  tags: [String!]!
+  title: String!
+}
+
+input GetProjectsInput {
+  category_id: Float
+  limit: Int!
+  offset: Int!
+  search: String
+
+  """There are available sorts: (date,top)"""
+  sort: String = "date"
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  """Confirm new password"""
+  confirmNewPassword(confirmNewPasswordData: ConfirmNewPasswordInput!): String!
+
+  """Confirm registration"""
+  confirmRegistrationToken(token: String!): UserAuth!
+
+  """Create project"""
+  createProject(createProjectData: CreateProjectInput!): Project!
+
+  """Registration user"""
+  registration(registrationData: RegistrationInput!): String!
+
+  """Reset password"""
+  resetPassword(resetPasswordData: ResetPasswordInput!): String!
+
+  """Update current user"""
+  updateUser(updateUserData: UpdateUserInput!): User!
+}
+
+type Project {
+  author: User!
+  author_uid: String!
+  avatars: ProjectAvatars!
+  category: Category!
+  category_id: Int!
+  createdAt: String!
+  description: String
+  files: [ProjectFile!]!
+  id: Int!
+  price: Float!
+  source: String
+  tags: [Tag!]!
+  title: String!
+  updatedAt: String!
+}
+
+type ProjectAvatars {
+  default: String!
+  id: Float!
+  middle: String!
+  project: Project!
+  project_id: Float!
+}
+
+type ProjectFile {
+  id: Float!
+  project: Project!
+  project_id: Float!
+  type: String!
+  value: String!
+}
+
+type Query {
+  """Get current user"""
+  checkAuth: User!
+
+  """Get projects"""
+  getProjects(getProjectData: GetProjectsInput!): [Project!]!
+
+  """Log in"""
+  login(loginData: LoginInput!): UserAuth!
+}
+
+"""Registration user"""
+input RegistrationInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+input ResetPasswordInput {
+  email: String!
+}
+
+type Tag {
+  id: Float!
+  name: String!
+  projects: [Project!]!
+}
+
+input UpdateUserInput {
+  avatar: Upload!
+  description: String
+  name: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+type User {
+  avatars: UserAvatars!
+  description: String
+  email: String!
+  is_active: Boolean!
+  name: String
+  projects: [Project!]!
+  uid: String!
+}
+
+type UserAuth {
+  jwt_token: String!
+  user: User!
+}
+
+type UserAvatars {
+  default: String
+  id: Float!
+  large: String
+  middle: String
+  small: String
+  user: User!
+  user_uid: String!
+}
