@@ -23,6 +23,7 @@ import { GetUser } from './middlewares/get-user.middleware';
   imports: [
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), '..', 'assets'),
+      exclude: ['/graphql']
     }),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -41,7 +42,7 @@ import { GetUser } from './middlewares/get-user.middleware';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      sortSchema: true,
+      sortSchema: true
     }),
     UserModule,
     ProjectModule,
