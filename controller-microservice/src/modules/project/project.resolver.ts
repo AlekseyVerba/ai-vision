@@ -21,6 +21,10 @@ import { UserProperty } from 'src/decorators/user-property.decorator'
 //INPUT TYPES
 import { CreateProjectInput } from './inputTypes/create-project.input'
 import { GetProjectsInput } from './inputTypes/get-projects.input'
+import { DeleteFileInput } from './inputTypes/delete-file.input'
+import { AddDeleteFavoriteProjectInput } from './inputTypes/add-delete-favorite-project.input'
+import { DeleteProjectInput } from './inputTypes/delete-project.input'
+import { UpdateProjectInput } from './inputTypes/update-project.input'
 
 //PIPES
 import { ValidationPipe } from "src/pipes/validation.pipe";
@@ -38,6 +42,56 @@ export class ProjectResolver {
       @Args('getProjectData') getProjectData: GetProjectsInput
     ) {
       return await this.projectService.getProjects(getProjectData)
+    }
+
+    @Mutation(returns => Boolean, { description: 'Add project to favorite projects' })
+    @UseGuards(AuthGuard)
+    async addToFavorite(
+      @UserProperty('uid') uid: string,
+      @Args('addToFavoriteData') addToFavoriteData: AddDeleteFavoriteProjectInput
+    ) {
+      addToFavoriteData.uid = uid
+      return await this.projectService.addToFavorite(addToFavoriteData)
+    }
+
+    @Mutation(returns => Boolean, { description: 'Delete project from favorite projects' })
+    @UseGuards(AuthGuard)
+    async deleteFromFavorite(
+      @UserProperty('uid') uid: string,
+      @Args('deleteFromFavoriteData') deleteFromFavoriteData: AddDeleteFavoriteProjectInput
+    ) {
+      deleteFromFavoriteData.uid = uid
+      return await this.projectService.deleteFromFavorite(deleteFromFavoriteData)
+    }
+
+    @Mutation(returns => Boolean, { description: 'Delete file from project' })
+    @UseGuards(AuthGuard)
+    async deleteFile(
+      @UserProperty('uid') uid: string,
+      @Args('deleteFileData') deleteFileData: DeleteFileInput
+    ) {
+      deleteFileData.uid = uid
+      return await this.projectService.deleteFileProject(deleteFileData)
+    }
+
+    @Mutation(returns => Boolean, { description: 'Delete project' })
+    @UseGuards(AuthGuard)
+    async deleteProject(      
+      @UserProperty('uid') uid: string,
+      @Args('deleteProjectData') deleteProjectData: DeleteProjectInput
+    ) {
+      deleteProjectData.uid = uid
+      return await this.projectService.deleteProject(deleteProjectData)
+    }
+
+    @Mutation(returns => Project, { description: 'Update project' })
+    @UseGuards(AuthGuard)
+    async updateProject(
+      @UserProperty('uid') uid: string,
+      @Args('updateProjectData') updateProjectData: UpdateProjectInput
+    ) {
+      updateProjectData.uid = uid
+      return await this.projectService.updateProject(updateProjectData)
     }
 
     @Mutation(returns => Project, { description: 'Create project' })

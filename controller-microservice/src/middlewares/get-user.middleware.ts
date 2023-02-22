@@ -14,7 +14,6 @@ export class GetUser implements NestMiddleware {
         }
 
         const token = authHeader.split(" ")[1]
-        
         if (!token) {
             next()
             return
@@ -22,7 +21,6 @@ export class GetUser implements NestMiddleware {
 
         try {
             const user = verify(token, process.env.JWT_SECRET)
-
             req.user = user as IUserToken
         } catch(e) {
             console.log(`Срок jwt токена истёк`)

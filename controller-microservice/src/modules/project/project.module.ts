@@ -10,11 +10,20 @@ import { ProjectService } from './project.service'
 import { AppModule } from "src/app.module";
 import { FileModule } from "../file/file.module";
 
+//VALIDATIONS
+import { IsProjectFileExistsConstraint } from 'src/validations/projectFileExists.validation'
+import { IsProjectExistsConstraint } from 'src/validations/projectExists.validation'
+
 @Module({
     imports: [
         forwardRef(() => AppModule),
         FileModule
     ],
-    providers: [ProjectService, ProjectResolver]
+    providers: [
+        ProjectService,
+        ProjectResolver,
+        IsProjectFileExistsConstraint,
+        IsProjectExistsConstraint
+    ]
 })
 export class ProjectModule {}

@@ -13,6 +13,21 @@ export class UpdateUserInput {
     @Field({ nullable: true })
     description?: string
 
+    @Field({ nullable: true })
+    facebook_link?: string
+
+    @Field({ nullable: true })
+    instagram_link?: string
+
+    @Field({ nullable: true })
+    twitter_link?: string
+
+    @Field({ nullable: true })
+    pinterest_link?: string
+
+    @Field({ nullable: true })
+    telegram_link?: string
+
     @Field(() => GraphQLUpload)
     avatar?: Promise<FileUpload>;
 

@@ -2,6 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AddDeleteFavoriteProjectInput {
+  id: Int!
+}
+
 type Category {
   id: Int!
   name: String!
@@ -30,6 +34,14 @@ input CreateProjectInput {
   title: String!
 }
 
+input DeleteFileInput {
+  id: Int!
+}
+
+input DeleteProjectInput {
+  id: Int!
+}
+
 input GetProjectsInput {
   category_id: Float
   limit: Int!
@@ -46,6 +58,9 @@ input LoginInput {
 }
 
 type Mutation {
+  """Add project to favorite projects"""
+  addToFavorite(addToFavoriteData: AddDeleteFavoriteProjectInput!): Boolean!
+
   """Confirm new password"""
   confirmNewPassword(confirmNewPasswordData: ConfirmNewPasswordInput!): String!
 
@@ -55,11 +70,23 @@ type Mutation {
   """Create project"""
   createProject(createProjectData: CreateProjectInput!): Project!
 
+  """Delete file from project"""
+  deleteFile(deleteFileData: DeleteFileInput!): Boolean!
+
+  """Delete project from favorite projects"""
+  deleteFromFavorite(deleteFromFavoriteData: AddDeleteFavoriteProjectInput!): Boolean!
+
+  """Delete project"""
+  deleteProject(deleteProjectData: DeleteProjectInput!): Boolean!
+
   """Registration user"""
   registration(registrationData: RegistrationInput!): String!
 
   """Reset password"""
   resetPassword(resetPasswordData: ResetPasswordInput!): String!
+
+  """Update project"""
+  updateProject(updateProjectData: UpdateProjectInput!): Project!
 
   """Update current user"""
   updateUser(updateUserData: UpdateUserInput!): User!
@@ -75,6 +102,7 @@ type Project {
   description: String
   files: [ProjectFile!]!
   id: Int!
+  is_active: Boolean!
   price: Float!
   source: String
   tags: [Tag!]!
@@ -126,10 +154,34 @@ type Tag {
   projects: [Project!]!
 }
 
+input UpdateProjectInput {
+  """Project's avatar"""
+  avatar: Upload
+  category_id: Int
+  description: String
+
+  """Project's files"""
+  files: [Upload!]
+  id: Int!
+  price: Float
+
+  """Name ai source"""
+  source: String
+
+  """If tag does not exist, it will be created"""
+  tags: [String!]
+  title: String!
+}
+
 input UpdateUserInput {
   avatar: Upload!
   description: String
+  facebook_link: String
+  instagram_link: String
   name: String
+  pinterest_link: String
+  telegram_link: String
+  twitter_link: String
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -139,9 +191,14 @@ type User {
   avatars: UserAvatars!
   description: String
   email: String!
+  facebook_link: String
+  instagram_link: String
   is_active: Boolean!
   name: String
+  pinterest_link: String
   projects: [Project!]!
+  telegram_link: String
+  twitter_link: String
   uid: String!
 }
 

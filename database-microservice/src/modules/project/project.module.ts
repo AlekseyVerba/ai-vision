@@ -18,6 +18,7 @@ import { ProjecFile } from 'src/models/project_file.model'
 import { ProjectTag } from 'src/models/project_tag.model'
 import { User } from 'src/models/user.model'
 import { Category } from "src/models/category.model";
+import { UserProjectFavorite } from 'src/models/user_project_favorite.model'
 
 
 @Module({
@@ -30,7 +31,8 @@ import { Category } from "src/models/category.model";
             ProjecFile,
             ProjectTag,
             User,
-            Category
+            Category,
+            UserProjectFavorite
         ])
     ],
     controllers: [ProjectController],

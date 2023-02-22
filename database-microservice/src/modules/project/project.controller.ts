@@ -7,6 +7,11 @@ import { ProjectService } from './project.service'
 //DTO
 import { CreateProjectDto } from './dto/create-project.dto'
 import { GetProjectsDto } from './dto/get-projects.dto'
+import { DeleteProjectFileDto } from './dto/delete-project-file.dto'
+import { AddDeleteFavoriteProjectDto } from './dto/add-delete-favorite-project.dto'
+import { DeleteProjectDto } from './dto/delete-project.dto'
+import { CheckUserAuthorProjectDto } from './dto/check-user-author-project.dto'
+import { UpdateProjectDto } from './dto/update-project.dto'
 
 @Controller('project')
 export class ProjectController {
@@ -14,9 +19,19 @@ export class ProjectController {
         private readonly projectService: ProjectService
     ) {}
 
+    @MessagePattern('check-user-author-project')
+    async checkUserAuthorProject(dto: CheckUserAuthorProjectDto) {
+        return this.projectService.checkUserAuthorProject(dto)
+    }
+
     @MessagePattern('get-projects')
     async getProjects(dto: GetProjectsDto) {
         return this.projectService.getProjects(dto)
+    }
+
+    @MessagePattern('update-project')
+    async updateProject(dto: UpdateProjectDto) {
+        return this.projectService.updateProject(dto)
     }
 
     @MessagePattern('create-project')
@@ -27,6 +42,36 @@ export class ProjectController {
     @MessagePattern('get-project-avatars')
     async getProjectAvatars(id: number) {
         return this.projectService.getProjectAvatars(id)
+    }
+
+    @MessagePattern('delete-project')
+    async deleteProject(dto: DeleteProjectDto) {
+        return this.projectService.deleteProject(dto)
+    }
+
+    @MessagePattern('add-to-favorite')
+    async addToFavorite(dto: AddDeleteFavoriteProjectDto) {
+        return this.projectService.addToFavorite(dto)
+    }
+
+    @MessagePattern('delete-from-favorite')
+    async deleteFromFavorite(dto: AddDeleteFavoriteProjectDto) {
+        return this.projectService.deleteFromFavorite(dto)
+    }
+
+    @MessagePattern('get-project-by-id')
+    async getProjectById(id: number) {
+        return this.projectService.getProjectById(id)
+    }
+
+    @MessagePattern('delete-file-project')
+    async deleteFileProject(dto: DeleteProjectFileDto) {
+        return this.projectService.deleteFileProject(dto)
+    }
+
+    @MessagePattern('get-project-file')
+    async getProjectFile(id: number) {
+        return this.projectService.getProjectFile(id)
     }
 
     @MessagePattern('get-project-files')

@@ -31,6 +31,9 @@ export class Project {
     category_id: number
 
     @Field()
+    is_active: boolean
+
+    @Field()
     createdAt: string
 
     @Field()

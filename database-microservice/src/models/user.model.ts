@@ -37,6 +37,31 @@ export class User extends Model<User> {
   description: string
 
   @Column({
+    type: DataType.TEXT
+  })
+  facebook_link: string
+
+  @Column({
+    type: DataType.TEXT
+  })
+  instagram_link: string
+
+  @Column({
+    type: DataType.TEXT
+  })
+  twitter_link: string
+
+  @Column({
+    type: DataType.TEXT
+  })
+  pinterest_link: string
+
+  @Column({
+    type: DataType.TEXT
+  })
+  telegram_link: string
+
+  @Column({
     type: DataType.TEXT,
     allowNull: false
   })

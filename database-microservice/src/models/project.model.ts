@@ -36,6 +36,13 @@ export class Project extends Model<Project> {
     source: string
 
     @Column({
+        type: DataType.BOOLEAN,
+        defaultValue: true
+    })
+    is_active: boolean
+
+
+    @Column({
         type: DataType.INTEGER
     })
     price: number
