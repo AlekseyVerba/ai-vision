@@ -130,6 +130,9 @@ type Query {
   """Get current user"""
   checkAuth: User!
 
+  """Get all categories"""
+  getAllCategories: [Category!]!
+
   """Get projects"""
   getProjects(getProjectData: GetProjectsInput!): [Project!]!
 

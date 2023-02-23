@@ -11,4 +11,8 @@ export class CategoryService {
     async getCategoryById(id: number) {
         return lastValueFrom(this.client.send('get-category-by-id', id))
     }
+
+    async getAllCategories() {
+        return lastValueFrom(this.client.send('get-all-categories', {}))
+    }
 }
