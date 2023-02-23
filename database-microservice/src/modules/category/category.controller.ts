@@ -14,4 +14,9 @@ export class CateogryController {
     async getCategoryById(id: number) {
         return this.categoryService.getCategoryById(id)
     }
+
+    @MessagePattern('get-all-categories')
+    async getAllCategories() {
+        return this.categoryService.getAllCategories()
+    }
 }

@@ -14,4 +14,8 @@ export class CategoryService {
     async getCategoryById(id: number) {
         return await this.categoryRepository.findByPk(id)
     }
+
+    async getAllCategories() {
+        return await this.categoryRepository.findAll()
+    }
 }
