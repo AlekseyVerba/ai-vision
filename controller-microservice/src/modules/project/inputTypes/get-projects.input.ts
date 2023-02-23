@@ -15,6 +15,6 @@ export class GetProjectsInput {
     @Field({ nullable: true })
     search: string
 
-    @Field({ nullable: true, defaultValue: 'date', description: 'There are available sorts: (date,top)' })
+    @Field({ nullable: true, defaultValue: 'date', description: 'There are available sorts: (new, old, random,top)' })
     sort: string
 }

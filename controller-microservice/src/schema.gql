@@ -48,7 +48,7 @@ input GetProjectsInput {
   offset: Int!
   search: String
 
-  """There are available sorts: (date,top)"""
+  """There are available sorts: (new, old, random,top)"""
   sort: String = "date"
 }
 
