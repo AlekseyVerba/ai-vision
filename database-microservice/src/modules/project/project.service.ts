@@ -61,7 +61,7 @@ export class ProjectService {
     ) { }
 
     async checkUserAuthorProject({ id, uid }: CheckUserAuthorProjectDto) {
-        const project = await this.projectRepository.findByPk(id, {attributes: ['author_uid']})
+        const project = await this.projectRepository.findByPk(id, { attributes: ['author_uid'] })
 
         return project.author_uid === uid
     }
@@ -129,24 +129,24 @@ export class ProjectService {
     }
 
     async getProjects({ limit, offset, sort, category_id, search = '' }: GetProjectsDto) {
-
-        let seqFn
-        let group = []
+        let order;
+        let group = [];
         switch (sort) {
-            case 'date':
-                seqFn = [['createdAt', 'DESC']]
+            case 'new':
+                order = [['createdAt', 'DESC']];
                 break;
-
+            case 'old':
+                order = [['createdAt', 'ASC']];
+                break;
             case 'top':
-                seqFn = [[sequelize.fn('count', sequelize.col('users_favorite.UserProjectFavorite.user_uid')), 'DESC']]
-                group = ['Project.id', 'users_favorite->UserProjectFavorite.user_uid', 'users_favorite->UserProjectFavorite.project_id']
+                order = sequelize.literal('(SELECT COUNT(*) FROM "users_projects_favorite" WHERE "users_projects_favorite"."project_id" = "Project"."id") DESC');
                 break;
             default:
-                seqFn = [['createdAt', 'DESC']]
+                order = [[sequelize.literal('random()')]];
                 break;
         }
 
-        const ObjWhere: any = {
+        const where: any = {
             is_active: true,
             [Op.or]: [
                 {
@@ -156,12 +156,15 @@ export class ProjectService {
                 },
                 sequelize.where(sequelize.col('tags.name'), { [Op.iLike]: `%${search}%` })
             ]
+        };
+
+        if (category_id) {
+            where.category_id = category_id;
         }
 
-        if (category_id) ObjWhere.category_id = category_id
-
-        return await this.projectRepository.findAll({
-            where: ObjWhere,
+        const subquery = await this.projectRepository.findAll({
+            attributes: ['id'],
+            where,
             include: [
                 {
                     model: Tag,
@@ -170,21 +173,31 @@ export class ProjectService {
                     through: {
                         attributes: []
                     }
-                },
-                {
-                    model: User,
-                    as: 'users_favorite',
-                    attributes: []
                 }
             ],
-            order: seqFn,
-            limit,
-            offset,
+            order,
             subQuery: false,
             group
-        })
-    }
+        });
+        const ids = subquery.map(project => project.id);
 
+        return await this.projectRepository.findAll({
+            where: { id: ids },
+            include: [
+                {
+                    model: Tag,
+                    required: false,
+                    attributes: [],
+                    through: {
+                        attributes: []
+                    }
+                }
+            ],
+            order,
+            limit,
+            offset
+        });
+    }
     async createProject({ filesPath, avatars, tags, uid, ...dto }: CreateProjectDto) {
         const transaction = await this.projectRepository.sequelize.transaction()
 
@@ -230,12 +243,12 @@ export class ProjectService {
         const transaction = await this.projectRepository.sequelize.transaction()
 
         try {
-            const project = (await this.projectRepository.findByPk(id)).update(dto, {transaction})
+            const project = (await this.projectRepository.findByPk(id)).update(dto, { transaction })
 
             if (avatars) {
                 await this.projectAvatarsRepository.update(avatars, {
                     where: {
-                        project_id:id
+                        project_id: id
                     },
                     transaction
                 })
@@ -252,7 +265,7 @@ export class ProjectService {
             if (tags) {
 
                 const addedProjectTagsId = (await this.projectTagRepository.findAll({
-                    where: {project_id: id},
+                    where: { project_id: id },
                     attributes: ['tag_id']
                 })).map(tag => tag.tag_id)
 
@@ -277,16 +290,16 @@ export class ProjectService {
                 }
 
                 if (existButMustBeAddedIds.length) {
-                    await this.projectTagRepository.bulkCreate(existButMustBeAddedIds, {transaction})
+                    await this.projectTagRepository.bulkCreate(existButMustBeAddedIds, { transaction })
                 }
-                
+
             }
 
             await transaction.commit()
 
             return project
 
-        } catch(err) {
+        } catch (err) {
             transaction.rollback()
             throw new RpcException(err.message)
         }
