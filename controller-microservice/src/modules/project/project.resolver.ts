@@ -37,7 +37,6 @@ export class ProjectResolver {
     ) {}
 
     @Query(returns => [Project!], { description: 'Get projects' })
-    @UseGuards(AuthGuard)
     async getProjects(
       @Args('getProjectData') getProjectData: GetProjectsInput
     ) {
