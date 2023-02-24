@@ -10,6 +10,7 @@ module.exports = shipit => {
         deployTo: '/root/ai-vision-2',
         repositoryUrl: 'https://github.com/AlekseyVerba/ai-vision.git',
         keepReleases: 5,
+        key: '/home/verba/.ssh/',
         shared: {
           overwrite: true,
           dirs: ['node_modules']
@@ -110,5 +111,4 @@ module.exports = shipit => {
               );
           });
   };
-  
   
