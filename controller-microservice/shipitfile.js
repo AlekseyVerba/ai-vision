@@ -43,7 +43,7 @@ module.exports = shipit => {
     
       shipit.on('published', () => {
         shipit.start('build')
-        shipit.start('pm2-server');
+        // shipit.start('pm2-server');
       });
 
 
@@ -90,18 +90,21 @@ module.exports = shipit => {
           shipit.blTask('build', async () => {
             await Promise.all([
                 shipit.remote(`cd ${shipit.releasePath}/database-microservice && npm run build`),
-                shipit.remote(`cd ${shipit.releasePath}/controller-microservice && npm run build`),
-                shipit.remote(`cd ${shipit.releasePath}/mailer-microservice && npm run build`)
+                // shipit.remote(`cd ${shipit.releasePath}/controller-microservice && npm run build`),
+                // shipit.remote(`cd ${shipit.releasePath}/mailer-microservice && npm run build`)
             ])
+
+            shipit.start('pm2-server');
           });
 
-        //   shipit.blTask('pm2-server', async () => {
-        //     await shipit.remote(`pm2 delete -s  || :`);
-        //     await shipit.remote(`pm2 delete -s  || :`);
-        //     await shipit.remote(`pm2 delete -s  || :`);
-        //     await shipit.remote(
-        //       `pm2 start ${ecosystemFilePath} --env production --watch true`
-        //     );
-        //   });
+          shipit.blTask('pm2-server', async () => {
+            // await shipit.remote(`pm2 delete -s  || :`);
+            // await shipit.remote(`pm2 delete -s  || :`);
+            // await shipit.remote(`pm2 delete -s  || :`);
+            // await shipit.remote();
+            await shipit.remote(
+                `pm2 start ${shipit.releasePath}/database-microservice/dist/main.js --name database1`
+              );
+          });
   };
   
