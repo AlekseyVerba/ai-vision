@@ -8,7 +8,7 @@ module.exports = shipit => {
     shipit.initConfig({
       default: {
         deployTo: '/root/ai-vision-2',
-        repositoryUrl: 'https://github.com/AlekseyVerba/animal.git',
+        repositoryUrl: 'https://github.com/AlekseyVerba/ai-vision.git',
         keepReleases: 5,
         shared: {
           overwrite: true,
