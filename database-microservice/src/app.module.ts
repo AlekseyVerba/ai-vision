@@ -27,6 +27,8 @@ import { UserProjectFavorite } from './models/user_project_favorite.model'
 import { UserToken } from './models/user_token.model'
 import { ProjectAvatars } from './models/project_avatars.model'
 import { ProjecFile } from './models/project_file.model'
+import { ProjecPrivateFile } from './models/project_private_file.model'
+import { UserProjectPrivateFile } from './models/user_project_private_file.model'
 
 @Module({
   imports: [
@@ -61,7 +63,9 @@ import { ProjecFile } from './models/project_file.model'
         UserProjectFavorite,
         UserToken,
         ProjectAvatars,
-        ProjecFile
+        ProjecFile,
+        ProjecPrivateFile,
+        UserProjectPrivateFile
       ],
       autoLoadModels: true,
       synchronize: true,

@@ -8,6 +8,7 @@ import { Tag } from './tag.model'
 import { ProjectAvatars } from './project_avatars.model'
 import { ProjecFile } from './project_file.model'
 import { UserProjectFavorite } from './user_project_favorite.model';
+import { ProjecPrivateFile } from './project_private_file.model'
 
 @Table({ tableName: 'projects' })
 export class Project extends Model<Project> {
@@ -63,6 +64,9 @@ export class Project extends Model<Project> {
 
     @HasOne(() => ProjectAvatars)
     avatars: ProjectAvatars
+
+    @HasOne(() => ProjecPrivateFile)
+    private_file: ProjecPrivateFile
 
     @HasMany(() => ProjecFile)
     files: ProjecFile[]

@@ -14,6 +14,7 @@ import { AuthModule } from './modules/auth/auth.module'
 import { FileModule } from './modules/file/file.module'
 import { CategoryModule } from './modules/category/category.module'
 import { BadWordsModule } from './modules/bad-words/bad-words.module'
+import { JSZipModule } from './modules/jszip/jszip.module'
 
 //INTERFACES
 import { join } from 'path';
@@ -49,7 +50,8 @@ import { GetUser } from './middlewares/get-user.middleware';
     AuthModule,
     FileModule,
     CategoryModule,
-    BadWordsModule
+    BadWordsModule,
+    JSZipModule
   ],
   controllers: [AppController],
   providers: [AppService],

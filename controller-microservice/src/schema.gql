@@ -26,6 +26,9 @@ input CreateProjectInput {
   files: [Upload!]
   price: Float!
 
+  """Project's private files"""
+  private_files: [Upload!]
+
   """Name ai source"""
   source: String
 
@@ -167,6 +170,9 @@ input UpdateProjectInput {
   files: [Upload!]
   id: Int!
   price: Float
+
+  """Project's private files"""
+  private_files: [Upload!]
 
   """Name ai source"""
   source: String

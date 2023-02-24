@@ -11,6 +11,9 @@ export abstract class CreateAndUpdateProject {
     @Field(() => GraphQLUpload, { nullable: true, description: 'Project\'s avatar' })
     avatar?: Promise<FileUpload>
 
+    @Field(() => [GraphQLUpload], { nullable: true, description: 'Project\'s private files' })
+    private_files: Promise<FileUpload>[]
+
     @Field(type => [GraphQLUpload], { nullable: true, description: 'Project\'s files' })
     files?: Promise<FileUpload>[]
 

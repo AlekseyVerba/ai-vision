@@ -26,23 +26,29 @@ export class ProjectService {
         return lastValueFrom(this.client.send('get-projects', dto))
     }
 
-    async createProject({files, avatar ,...dto}: CreateProjectInput) {
-
-        if (files) {
-            dto.filesPath = await this.uploadProjectFiles({files, uid: dto.uid})
+    async createProject({files, avatar, private_files ,...dto}: CreateProjectInput) {
+        console.log('lolo')
+        console.log(private_files)
+        if (private_files) {
+            const privateFilePath = await this.uploadPrivateFilesToZip({ files: private_files, uid: dto.uid })
+            console.log(privateFilePath)
         }
 
-        if (avatar) {
-            const { defaultImage, middle } = await this.uploadProjectAvatars({ avatar, uid: dto.uid })
+        // if (files) {
+        //     dto.filesPath = await this.uploadProjectFiles({files, uid: dto.uid})
+        // }
 
-            dto.avatars = {
-                default: defaultImage,
-                middle
-            }
+        // if (avatar) {
+        //     const { defaultImage, middle } = await this.uploadProjectAvatars({ avatar, uid: dto.uid })
 
-        }
+        //     dto.avatars = {
+        //         default: defaultImage,
+        //         middle
+        //     }
 
-        return await lastValueFrom(this.client.send('create-project', dto))
+        // }
+
+        // return await lastValueFrom(this.client.send('create-project', dto))
 
     }
 
@@ -175,5 +181,9 @@ export class ProjectService {
             const stream = createReadStream()
             return this.fileService.uploadFileStream({ file: { stream, filename }, dir: `user/${uid}/projects` })
         }))
+    }
+
+    async uploadPrivateFilesToZip({files, uid}: {files: Promise<FileUpload>[], uid: string}) {
+        return this.fileService.createZIPWithFiles({files, uid})
     }
 }
