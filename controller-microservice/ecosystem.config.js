@@ -3,7 +3,7 @@
         apps: [
           {
             name: 'hello',
-            script: '/root/ai-vision-2/releases/20230224123104/hello.js',
+            script: '/root/ai-vision-2/releases/20230224123833/hello.js',
             watch: true,
             autorestart: true,
             restart_delay: 1000,

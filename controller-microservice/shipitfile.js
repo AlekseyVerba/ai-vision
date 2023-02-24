@@ -79,14 +79,16 @@ module.exports = shipit => {
 
 
         shipit.blTask('npm-install', async () => {
-            shipit.remote(`cd ${shipit.releasePath} && npm install --production`);
+            shipit.remote(`cd ${shipit.releasePath}/database-microservice && npm install --production`);
+            shipit.remote(`cd ${shipit.releasePath}/controller-microservice && npm install --production`);
+            shipit.remote(`cd ${shipit.releasePath}/mailer-microservice && npm install --production`);
           });
   
-          shipit.blTask('pm2-server', async () => {
-            await shipit.remote(`pm2 delete -s ${appName} || :`);
-            await shipit.remote(
-              `pm2 start ${ecosystemFilePath} --env production --watch true`
-            );
-          });
+        //   shipit.blTask('pm2-server', async () => {
+        //     await shipit.remote(`pm2 delete -s ${appName} || :`);
+        //     await shipit.remote(
+        //       `pm2 start ${ecosystemFilePath} --env production --watch true`
+        //     );
+        //   });
   };
   
