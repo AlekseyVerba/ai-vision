@@ -82,7 +82,7 @@ module.exports = shipit => {
         shipit.blTask('npm-install', async () => {
             await shipit.remote(`cd ${shipit.releasePath}/database-microservice && npm install`),
             await shipit.remote(`cd ${shipit.releasePath}/controller-microservice && npm install`),
-            await shipit.remote(`cd ${shipit.releasePath}/mailer-microservice && npm install`)
+            await shipit.remote(`cd ${shipit.releasePath}/mailer-microservice && npm installd5qakA5E`)
           });
   
           shipit.blTask('build', async () => {
@@ -110,4 +110,5 @@ module.exports = shipit => {
               );
           });
   };
+  
   
