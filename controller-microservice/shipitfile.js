@@ -96,6 +96,7 @@ module.exports = shipit => {
 
             shipit.start('pm2-server');
           });
+          
 
           shipit.blTask('pm2-server', async () => {
             // await shipit.remote(`pm2 delete -s  || :`);
