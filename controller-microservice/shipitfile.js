@@ -46,36 +46,36 @@ module.exports = shipit => {
       });
 
 
-      shipit.blTask('copy-config', async () => {
+    //   shipit.blTask('copy-config', async () => {
 
-        const fs = require('fs');
+    //     const fs = require('fs');
         
-        const ecosystem = `
-        module.exports = {
-        apps: [
-          {
-            name: '${appName}',
-            script: '${shipit.releasePath}/hello.js',
-            watch: true,
-            autorestart: true,
-            restart_delay: 1000,
-            env: {
-              NODE_ENV: 'development'
-            },
-            env_production: {
-              NODE_ENV: 'production'
-            }
-          }
-        ]
-        };`;
+    //     const ecosystem = `
+    //     module.exports = {
+    //     apps: [
+    //       {
+    //         name: '${appName}',
+    //         script: '${shipit.releasePath}/hello.js',
+    //         watch: true,
+    //         autorestart: true,
+    //         restart_delay: 1000,
+    //         env: {
+    //           NODE_ENV: 'development'
+    //         },
+    //         env_production: {
+    //           NODE_ENV: 'production'
+    //         }
+    //       }
+    //     ]
+    //     };`;
         
-          fs.writeFileSync('ecosystem.config.js', ecosystem, function(err) {
-            if (err) throw err;
-            console.log('File created successfully.');
-          });
+    //       fs.writeFileSync('ecosystem.config.js', ecosystem, function(err) {
+    //         if (err) throw err;
+    //         console.log('File created successfully.');
+    //       });
         
-          await shipit.copyToRemote('ecosystem.config.js', ecosystemFilePath);
-        });
+    //       await shipit.copyToRemote('ecosystem.config.js', ecosystemFilePath);
+    //     });
 
 
         shipit.blTask('npm-install', async () => {
