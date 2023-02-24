@@ -19,5 +19,6 @@ async function bootstrap() {
   console.log(join(process.cwd(), '..', 'assets'))
 
   await app.listen(3000);
+  
 }
 bootstrap();
