@@ -42,50 +42,63 @@ module.exports = shipit => {
       });
     
       shipit.on('published', () => {
+        shipit.start('build')
         shipit.start('pm2-server');
       });
 
 
-    //   shipit.blTask('copy-config', async () => {
+      shipit.blTask('copy-config', async () => {
 
-    //     const fs = require('fs');
+        // const fs = require('fs');
         
-    //     const ecosystem = `
-    //     module.exports = {
-    //     apps: [
-    //       {
-    //         name: '${appName}',
-    //         script: '${shipit.releasePath}/hello.js',
-    //         watch: true,
-    //         autorestart: true,
-    //         restart_delay: 1000,
-    //         env: {
-    //           NODE_ENV: 'development'
-    //         },
-    //         env_production: {
-    //           NODE_ENV: 'production'
-    //         }
-    //       }
-    //     ]
-    //     };`;
+        // const ecosystem = `
+        // module.exports = {
+        // apps: [
+        //   {
+        //     name: '${appName}',
+        //     script: '${shipit.releasePath}/hello.js',
+        //     watch: true,
+        //     autorestart: true,
+        //     restart_delay: 1000,
+        //     env: {
+        //       NODE_ENV: 'development'
+        //     },
+        //     env_production: {
+        //       NODE_ENV: 'production'
+        //     }
+        //   }
+        // ]
+        // };`;
         
-    //       fs.writeFileSync('ecosystem.config.js', ecosystem, function(err) {
-    //         if (err) throw err;
-    //         console.log('File created successfully.');
-    //       });
+        //   fs.writeFileSync('ecosystem.config.js', ecosystem, function(err) {
+        //     if (err) throw err;
+        //     console.log('File created successfully.');
+        //   });
         
-    //       await shipit.copyToRemote('ecosystem.config.js', ecosystemFilePath);
-    //     });
+        //   await shipit.copyToRemote('ecosystem.config.js', ecosystemFilePath);
+        });
 
 
         shipit.blTask('npm-install', async () => {
-            shipit.remote(`cd ${shipit.releasePath}/database-microservice && npm install --production`);
-            shipit.remote(`cd ${shipit.releasePath}/controller-microservice && npm install --production`);
-            shipit.remote(`cd ${shipit.releasePath}/mailer-microservice && npm install --production`);
+            await Promise.all([
+                shipit.remote(`cd ${shipit.releasePath}/database-microservice && npm install --production`),
+                shipit.remote(`cd ${shipit.releasePath}/controller-microservice && npm install --production`),
+                shipit.remote(`cd ${shipit.releasePath}/mailer-microservice && npm install --production`)
+            ])
           });
   
+          shipit.blTask('build', async () => {
+            await Promise.all([
+                shipit.remote(`cd ${shipit.releasePath}/database-microservice && npm run build`),
+                shipit.remote(`cd ${shipit.releasePath}/controller-microservice && npm run build`),
+                shipit.remote(`cd ${shipit.releasePath}/mailer-microservice && npm run build`)
+            ])
+          });
+
         //   shipit.blTask('pm2-server', async () => {
-        //     await shipit.remote(`pm2 delete -s ${appName} || :`);
+        //     await shipit.remote(`pm2 delete -s  || :`);
+        //     await shipit.remote(`pm2 delete -s  || :`);
+        //     await shipit.remote(`pm2 delete -s  || :`);
         //     await shipit.remote(
         //       `pm2 start ${ecosystemFilePath} --env production --watch true`
         //     );
