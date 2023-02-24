@@ -80,31 +80,33 @@ module.exports = shipit => {
 
 
         shipit.blTask('npm-install', async () => {
-            await Promise.all([
-                shipit.remote(`cd ${shipit.releasePath}/database-microservice && npm install --production`),
-                // shipit.remote(`cd ${shipit.releasePath}/controller-microservice && npm install --production`),
-                // shipit.remote(`cd ${shipit.releasePath}/mailer-microservice && npm install --production`)
-            ])
+            await shipit.remote(`cd ${shipit.releasePath}/database-microservice && npm install --production`),
+            await shipit.remote(`cd ${shipit.releasePath}/controller-microservice && npm install --production`),
+            await shipit.remote(`cd ${shipit.releasePath}/mailer-microservice && npm install --production`)
           });
   
           shipit.blTask('build', async () => {
-            await Promise.all([
-                shipit.remote(`cd ${shipit.releasePath}/database-microservice && npm run build`),
-                // shipit.remote(`cd ${shipit.releasePath}/controller-microservice && npm run build`),
-                // shipit.remote(`cd ${shipit.releasePath}/mailer-microservice && npm run build`)
-            ])
+            await shipit.remote(`cd ${shipit.releasePath}/database-microservice && npm run build`),
+            await shipit.remote(`cd ${shipit.releasePath}/controller-microservice && npm run build`),
+            await shipit.remote(`cd ${shipit.releasePath}/mailer-microservice && npm run build`)
 
             shipit.start('pm2-server');
           });
           
 
           shipit.blTask('pm2-server', async () => {
-            // await shipit.remote(`pm2 delete -s  || :`);
-            // await shipit.remote(`pm2 delete -s  || :`);
-            // await shipit.remote(`pm2 delete -s  || :`);
-            // await shipit.remote();
+            await shipit.remote(`pm2 delete database3 -s  || :`);
+            await shipit.remote(`pm2 delete controller3 -s  || :`);
+            await shipit.remote(`pm2 delete mailer3 -s  || :`);
+
             await shipit.remote(
-                `pm2 start ${shipit.releasePath}/database-microservice/dist/main.js --name database1`
+                `pm2 start ${shipit.releasePath}/database-microservice/dist/main.js --name database3`
+              );
+              await shipit.remote(
+                `pm2 start ${shipit.releasePath}/controller-microservice/dist/main.js --name controller3`
+              );
+              await shipit.remote(
+                `pm2 start ${shipit.releasePath}/mailer-microservice/dist/main.js --name mailer3`
               );
           });
   };
