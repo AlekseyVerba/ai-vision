@@ -12,6 +12,6 @@ async function bootstrap() {
   app.use(graphqlUploadExpress({ maxFileSize: 1000000, maxFiles: 10 }));
   app.enableCors();
 
-  await app.listen(3000, 'APP_PRIVATE_IP_ADDRESS');
+  await app.listen(3000);
 }
 bootstrap();
