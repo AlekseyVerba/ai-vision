@@ -2,7 +2,7 @@ export const resetPasswordTemplate = ({ name, token }: { name: string; token: st
     return `
         <div>
             <h3>Dear ${name},</h3><br>
-            <p>Your token for reset password - ${token}</p>
+            <a href="http://localhost:3000/auth/reset-password/${token}">link<a/>
         </div>
     `
 }

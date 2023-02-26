@@ -65,7 +65,7 @@ type Mutation {
   addToFavorite(addToFavoriteData: AddDeleteFavoriteProjectInput!): Boolean!
 
   """Confirm new password"""
-  confirmNewPassword(confirmNewPasswordData: ConfirmNewPasswordInput!): String!
+  confirmNewPassword(confirmNewPasswordData: ConfirmNewPasswordInput!): Success!
 
   """Confirm registration"""
   confirmRegistrationToken(token: String!): UserAuth!
@@ -83,10 +83,10 @@ type Mutation {
   deleteProject(deleteProjectData: DeleteProjectInput!): Boolean!
 
   """Registration user"""
-  registration(registrationData: RegistrationInput!): String!
+  registration(registrationData: RegistrationInput!): Success!
 
   """Reset password"""
-  resetPassword(resetPasswordData: ResetPasswordInput!): String!
+  resetPassword(resetPasswordData: ResetPasswordInput!): Success!
 
   """Update project"""
   updateProject(updateProjectData: UpdateProjectInput!): Project!
@@ -152,6 +152,10 @@ input RegistrationInput {
 
 input ResetPasswordInput {
   email: String!
+}
+
+type Success {
+  value: String!
 }
 
 type Tag {

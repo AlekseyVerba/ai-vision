@@ -19,6 +19,7 @@ import { ValidationPipe } from 'src/pipes/validation.pipe'
 //QUERIES DATA 
 import { UserAuth } from './queriesTypes/user-auth.query'
 import { AuthGuard } from "src/guards/auth.guard";
+import { Success } from './queriesTypes/succes.query'
 
 //DECORATORS
 import { UserProperty } from 'src/decorators/user-property.decorator'
@@ -45,11 +46,15 @@ export class AuthResolver {
         return await this.authService.login(loginData)
     }
 
-    @Mutation(returns => String, { description: 'Registration user' })
+    @Mutation(returns => Success, { description: 'Registration user' })
     async registration(
         @Args('registrationData') registrationData: RegistrationInput
     ) {
-        return await this.authService.registration(registrationData)
+        const result = await this.authService.registration(registrationData)
+
+        return {
+            value: result
+        }
     }
 
     @Mutation(returns => UserAuth, { description: 'Confirm registration' })
@@ -59,17 +64,23 @@ export class AuthResolver {
         return await this.authService.confirmRegistrationToken(token)
     }
 
-    @Mutation(returns => String, { description: 'Reset password' })
+    @Mutation(returns => Success, { description: 'Reset password' })
     async resetPassword(
         @Args('resetPasswordData') {email}: ResetPasswordInput
     ) {
-        return await this.authService.resetPassword(email)
+        const result = await this.authService.resetPassword(email)
+        return {
+            value: result
+        }
     }
 
-    @Mutation(returns => String, { description: 'Confirm new password' })
+    @Mutation(returns => Success, { description: 'Confirm new password' })
     async confirmNewPassword(
         @Args('confirmNewPasswordData') confirmNewPasswordData: ConfirmNewPasswordInput
     ) {
-        return await this.authService.confirmNewPassword(confirmNewPasswordData)
+        const result = await this.authService.confirmNewPassword(confirmNewPasswordData)
+        return {
+            value: result
+        }
     }
 }

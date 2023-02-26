@@ -5,6 +5,7 @@ import { ClientProxy } from "@nestjs/microservices";
 import { RegistrationInput } from './inputTypes/registration.input'
 import { LoginInput } from './inputTypes/login.input'
 import { ConfirmNewPasswordInput } from './inputTypes/confirm-new-password.input'
+import { lastValueFrom } from "rxjs";
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,7 @@ export class AuthService {
     }
     
     async registration(dto: RegistrationInput) {
-        return this.client.send('registration-user', dto)
+        return await lastValueFrom(this.client.send('registration-user', dto))
     }
 
     async confirmRegistrationToken(token: string) {
@@ -29,10 +30,10 @@ export class AuthService {
     }
 
     async resetPassword(email: string) {
-        return this.client.send('reset-password', email)
+        return  await lastValueFrom(this.client.send('reset-password', email))
     }
 
     async confirmNewPassword(dto: ConfirmNewPasswordInput) {
-        return this.client.send('confirm-new-password', dto)
+        return await lastValueFrom(this.client.send('confirm-new-password', dto))
     }
 }
