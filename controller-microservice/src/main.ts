@@ -7,12 +7,12 @@ import { join } from 'path';
 import { readFileSync } from 'fs'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
   const httpsOptions = {
     key: readFileSync(join(__dirname, '..', 'ssl', 'certificate.crt')),
     cert: readFileSync(join(__dirname, '..', 'ssl', 'private.key')),
   };
+
+  const app = await NestFactory.create(AppModule, { httpsOptions });
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.useGlobalFilters(new HttpExceptionFilter)
