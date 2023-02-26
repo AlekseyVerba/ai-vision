@@ -8,8 +8,8 @@ import { readFileSync } from 'fs'
 
 async function bootstrap() {
   const httpsOptions = {
-    key: readFileSync(join(__dirname, '..', 'ssl', 'certificate.crt')),
-    cert: readFileSync(join(__dirname, '..', 'ssl', 'private.key')),
+    key: readFileSync(join(__dirname, '..', 'ssl', 'private.key')),
+    cert: readFileSync(join(__dirname, '..', 'ssl', 'certificate.pem')),
   };
 
   const app = await NestFactory.create(AppModule, { httpsOptions });
