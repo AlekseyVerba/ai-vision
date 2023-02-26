@@ -13,10 +13,6 @@ async function bootstrap() {
   app.use(graphqlUploadExpress({ maxFileSize: 1000000, maxFiles: 10 }));
   app.enableCors();
 
-  console.log(process.cwd())
-  console.log('---------------------')
-
-  console.log(join(process.cwd(), '..', 'assets'))
 
   await app.listen(3000);
   

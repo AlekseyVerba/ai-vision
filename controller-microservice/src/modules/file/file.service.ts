@@ -17,7 +17,7 @@ export class FileService {
         @Inject('JSZIP')
         private readonly jszip: JSZip,
     ) {
-        this.pathDir = join(process.cwd(), '..', 'assets')
+        this.pathDir = join(__dirname, '..', '..', '..', '..', 'assets')
     }
 
     async uploadFileStream({

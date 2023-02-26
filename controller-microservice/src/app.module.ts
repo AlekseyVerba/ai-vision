@@ -23,7 +23,7 @@ import { GetUser } from './middlewares/get-user.middleware';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), '..', 'assets'),
+      rootPath: join(__dirname, '..', '..', 'assets'),
       exclude: ['/graphql']
     }),
     ConfigModule.forRoot({
@@ -42,7 +42,7 @@ import { GetUser } from './middlewares/get-user.middleware';
     ]),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      autoSchemaFile: join(__dirname, '..' ,'src/schema.gql'),
       sortSchema: true
     }),
     UserModule,
@@ -59,7 +59,6 @@ import { GetUser } from './middlewares/get-user.middleware';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    console.log(join(process.cwd(), '..', 'assets'))
     consumer.apply(GetUser).forRoutes("*")
   }
 }
