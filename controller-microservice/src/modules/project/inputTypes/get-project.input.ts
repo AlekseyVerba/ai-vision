@@ -1,13 +1,13 @@
-import { InputType, Field, Int, Float } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 import { IsEmpty } from 'class-validator';
 import { IsProjectExist } from 'src/validations/projectExists.validation';
 
 @InputType()
-export class DeleteProjectInput {
+export class GetProjectPrivateFileInput {
   @IsEmpty()
-  uid: string;
+  uid?: string;
 
   @Field((type) => Int)
   @IsProjectExist()
-  id: number;
+  project_id: number;
 }

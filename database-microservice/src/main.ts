@@ -12,7 +12,7 @@ async function bootstrap() {
       port: process.env.PORT || 3000,
     },
   });
-  app.useGlobalFilters(new ExceptionFilter)
+  app.useGlobalFilters(new ExceptionFilter());
 
   await app.listen();
 }

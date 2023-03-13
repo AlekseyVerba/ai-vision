@@ -1,7 +1,17 @@
-import { Model, Table, Column, DataType, HasMany, HasOne, BelongsToMany, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import {
+  Model,
+  Table,
+  Column,
+  DataType,
+  HasMany,
+  HasOne,
+  BelongsToMany,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
 
 //FOREIGN
-import { Project } from './project.model'
+import { Project } from './project.model';
 
 @Table({ tableName: 'project_avatars' })
 export class ProjectAvatars extends Model<ProjectAvatars> {
@@ -9,29 +19,29 @@ export class ProjectAvatars extends Model<ProjectAvatars> {
     type: DataType.INTEGER,
     unique: true,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
   })
-  id: number
+  id: number;
 
   @Column({
     type: DataType.TEXT,
-    unique: true
+    unique: true,
   })
-  middle: string
+  middle: string;
 
   @Column({
     type: DataType.TEXT,
-    unique: true
+    unique: true,
   })
-  default: string
+  default: string;
 
   @ForeignKey(() => Project)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false
+    allowNull: false,
   })
-  project_id: number
+  project_id: number;
 
-  @BelongsTo(() => Project, {onDelete: 'cascade'})
-  project: Project
+  @BelongsTo(() => Project, { onDelete: 'cascade' })
+  project: Project;
 }

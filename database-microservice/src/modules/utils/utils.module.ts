@@ -1,10 +1,10 @@
-import { Module } from "@nestjs/common";
+import { Module } from '@nestjs/common';
 
 //SERVICES
-import { UtilsService } from './utils.service'
+import { UtilsService } from './utils.service';
 
 @Module({
-    providers: [UtilsService],
-    exports: [UtilsService]
+  providers: [UtilsService],
+  exports: [UtilsService],
 })
 export class UtilsModule {}

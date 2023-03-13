@@ -1,16 +1,16 @@
-import { Field ,ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 //MODEL
-import { Project } from 'src/modules/project/models/project.model'
+import { Project } from 'src/modules/project/models/project.model';
 
 @ObjectType()
 export class Tag {
-    @Field()
-    id: number
+  @Field()
+  id: number;
 
-    @Field()
-    name: string
+  @Field()
+  name: string;
 
-    @Field(type => [Project])
-    projects: Project[]
+  @Field((type) => [Project])
+  projects: Project[];
 }

@@ -5,36 +5,36 @@ import * as GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
 
 @InputType()
 export class UpdateUserInput {
-    uid?: string
+  uid?: string;
 
-    @Field({ nullable: true })
-    name?: string
+  @Field({ nullable: true })
+  name?: string;
 
-    @Field({ nullable: true })
-    description?: string
+  @Field({ nullable: true })
+  description?: string;
 
-    @Field({ nullable: true })
-    facebook_link?: string
+  @Field({ nullable: true })
+  facebook_link?: string;
 
-    @Field({ nullable: true })
-    instagram_link?: string
+  @Field({ nullable: true })
+  instagram_link?: string;
 
-    @Field({ nullable: true })
-    twitter_link?: string
+  @Field({ nullable: true })
+  twitter_link?: string;
 
-    @Field({ nullable: true })
-    pinterest_link?: string
+  @Field({ nullable: true })
+  pinterest_link?: string;
 
-    @Field({ nullable: true })
-    telegram_link?: string
+  @Field({ nullable: true })
+  telegram_link?: string;
 
-    @Field(() => GraphQLUpload)
-    avatar?: Promise<FileUpload>;
+  @Field(() => GraphQLUpload)
+  avatar?: Promise<FileUpload>;
 
-    avatars?: {
-        defaultImage: string
-        small: string
-        middle: string
-        large: string
-    }
+  avatars?: {
+    defaultImage: string;
+    small: string;
+    middle: string;
+    large: string;
+  };
 }

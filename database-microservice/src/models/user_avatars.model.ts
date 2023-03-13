@@ -1,7 +1,17 @@
-import { Model, Table, Column, DataType, HasMany, HasOne, BelongsToMany, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import {
+  Model,
+  Table,
+  Column,
+  DataType,
+  HasMany,
+  HasOne,
+  BelongsToMany,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
 
 //FOREIGN
-import { User } from './user.model'
+import { User } from './user.model';
 
 @Table({ tableName: 'user_avatars' })
 export class UserAvatars extends Model<UserAvatars> {
@@ -9,41 +19,41 @@ export class UserAvatars extends Model<UserAvatars> {
     type: DataType.INTEGER,
     unique: true,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
   })
-  id: number
+  id: number;
 
   @Column({
     type: DataType.TEXT,
-    unique: true
+    unique: true,
   })
-  small: string
+  small: string;
 
   @Column({
     type: DataType.TEXT,
-    unique: true
+    unique: true,
   })
-  middle: string
+  middle: string;
 
   @Column({
     type: DataType.TEXT,
-    unique: true
+    unique: true,
   })
-  large: string
+  large: string;
 
   @Column({
     type: DataType.TEXT,
-    unique: true
+    unique: true,
   })
-  default: string
+  default: string;
 
   @ForeignKey(() => User)
   @Column({
     type: DataType.UUID,
-    allowNull: false
+    allowNull: false,
   })
-  user_uid: string
+  user_uid: string;
 
-  @BelongsTo(() => User, {onDelete: 'cascade'})
-  user: User
+  @BelongsTo(() => User, { onDelete: 'cascade' })
+  user: User;
 }

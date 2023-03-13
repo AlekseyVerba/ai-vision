@@ -1,4 +1,4 @@
 export interface ConfirmNewPasswordDto {
-    token: string;
-    password: string;
+  token: string;
+  password: string;
 }

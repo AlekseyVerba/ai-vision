@@ -1,86 +1,98 @@
-import { Model, Table, Column, DataType, HasOne, HasMany, BelongsToMany, BeforeCreate } from 'sequelize-typescript';
+import {
+  Model,
+  Table,
+  Column,
+  DataType,
+  HasOne,
+  HasMany,
+  BelongsToMany,
+  BeforeCreate,
+} from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
-import { hash } from 'bcrypt'
+import { hash } from 'bcrypt';
 
 //FOREIGN
-import { UserAvatars } from './user_avatars.model'
-import { Project } from './project.model'
-import { UserProjectFavorite } from './user_project_favorite.model'
+import { UserAvatars } from './user_avatars.model';
+import { Project } from './project.model';
+import { UserProjectFavorite } from './user_project_favorite.model';
 import { UserToken } from './user_token.model';
 
-@Table({ tableName: 'users', defaultScope: { attributes: { exclude: ['password'] } }})
+@Table({
+  tableName: 'users',
+  defaultScope: { attributes: { exclude: ['password'] } },
+})
 export class User extends Model<User> {
   @Column({
     type: DataType.UUID,
     defaultValue: () => uuidv4(),
-    primaryKey: true
+    primaryKey: true,
   })
-  uid: string
+  uid: string;
 
   @Column({
     type: DataType.TEXT,
     unique: true,
-    allowNull: false
+    allowNull: false,
   })
-  email: string
+  email: string;
 
   @Column({
     type: DataType.TEXT,
     unique: true,
-    allowNull: false
+    allowNull: false,
   })
-  name: string
-
-  @Column({
-    type: DataType.TEXT
-  })
-  description: string
-
-  @Column({
-    type: DataType.TEXT
-  })
-  facebook_link: string
-
-  @Column({
-    type: DataType.TEXT
-  })
-  instagram_link: string
-
-  @Column({
-    type: DataType.TEXT
-  })
-  twitter_link: string
-
-  @Column({
-    type: DataType.TEXT
-  })
-  pinterest_link: string
-
-  @Column({
-    type: DataType.TEXT
-  })
-  telegram_link: string
+  name: string;
 
   @Column({
     type: DataType.TEXT,
-    allowNull: false
   })
-  password: string
+  description: string;
+
+  @Column({
+    type: DataType.TEXT,
+  })
+  facebook_link: string;
+
+  @Column({
+    type: DataType.TEXT,
+  })
+  instagram_link: string;
+
+  @Column({
+    type: DataType.TEXT,
+  })
+  twitter_link: string;
+
+  @Column({
+    type: DataType.TEXT,
+  })
+  pinterest_link: string;
+
+  @Column({
+    type: DataType.TEXT,
+  })
+  telegram_link: string;
+
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+  })
+  password: string;
 
   @Column({
     type: DataType.BOOLEAN,
-    defaultValue: false
+    defaultValue: false,
   })
-  is_active: boolean
+  is_active: boolean;
 
   @HasOne(() => UserAvatars)
-  avatars: UserAvatars
+  avatars: UserAvatars;
 
   @HasMany(() => Project)
-  projects: Project[]
+  projects: Project[];
 
   @HasMany(() => UserToken)
-  tokens: UserToken[]
+  tokens: UserToken[];
 
   @BelongsToMany(() => Project, () => UserProjectFavorite)
   projects_favorite: Project[];
@@ -88,6 +100,6 @@ export class User extends Model<User> {
   @BeforeCreate
   static async hashPassword(instance) {
     const saltRounds = 10;
-    instance.password = await hash(instance.password, saltRounds)
+    instance.password = await hash(instance.password, saltRounds);
   }
 }

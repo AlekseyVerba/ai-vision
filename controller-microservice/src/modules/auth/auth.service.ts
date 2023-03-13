@@ -1,39 +1,37 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { ClientProxy } from "@nestjs/microservices";
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 
 //INPUT TYPES
-import { RegistrationInput } from './inputTypes/registration.input'
-import { LoginInput } from './inputTypes/login.input'
-import { ConfirmNewPasswordInput } from './inputTypes/confirm-new-password.input'
-import { lastValueFrom } from "rxjs";
+import { RegistrationInput } from './inputTypes/registration.input';
+import { LoginInput } from './inputTypes/login.input';
+import { ConfirmNewPasswordInput } from './inputTypes/confirm-new-password.input';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        @Inject('DB_MICROSERVICE') private client: ClientProxy,
-    ) {}
+  constructor(@Inject('DB_MICROSERVICE') private client: ClientProxy) {}
 
-    async login(dto: LoginInput) {
-        return this.client.send('login', dto)
-    }
+  async login(dto: LoginInput) {
+    return this.client.send('login', dto);
+  }
 
-    async getUser(uid: string) {
-        return this.client.send('get-user-by-uid', uid)
-    }
-    
-    async registration(dto: RegistrationInput) {
-        return await lastValueFrom(this.client.send('registration-user', dto))
-    }
+  async getUser(uid: string) {
+    return this.client.send('get-user-by-uid', uid);
+  }
 
-    async confirmRegistrationToken(token: string) {
-        return this.client.send('confirm-registration-token', token)
-    }
+  async registration(dto: RegistrationInput) {
+    return await lastValueFrom(this.client.send('registration-user', dto));
+  }
 
-    async resetPassword(email: string) {
-        return  await lastValueFrom(this.client.send('reset-password', email))
-    }
+  async confirmRegistrationToken(token: string) {
+    return this.client.send('confirm-registration-token', token);
+  }
 
-    async confirmNewPassword(dto: ConfirmNewPasswordInput) {
-        return await lastValueFrom(this.client.send('confirm-new-password', dto))
-    }
+  async resetPassword(email: string) {
+    return await lastValueFrom(this.client.send('reset-password', email));
+  }
+
+  async confirmNewPassword(dto: ConfirmNewPasswordInput) {
+    return await lastValueFrom(this.client.send('confirm-new-password', dto));
+  }
 }

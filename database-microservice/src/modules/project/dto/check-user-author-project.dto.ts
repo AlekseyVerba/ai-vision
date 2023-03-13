@@ -1,4 +1,4 @@
 export interface CheckUserAuthorProjectDto {
-    uid: string
-    id: number
+  uid: string;
+  id: number;
 }

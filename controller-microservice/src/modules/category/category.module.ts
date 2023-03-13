@@ -1,25 +1,19 @@
-import { forwardRef, Module } from "@nestjs/common";
+import { forwardRef, Module } from '@nestjs/common';
 
 //MODULES
-import { AppModule } from "src/app.module";
+import { AppModule } from 'src/app.module';
 
 //SERVICES
-import { CategoryService } from './category.service'
+import { CategoryService } from './category.service';
 
 //VALIDATIONS
-import { IsCategoryExistsConstraint } from 'src/validations/categoryExists.validation'
+import { IsCategoryExistsConstraint } from 'src/validations/categoryExists.validation';
 
 //RESOLVERS
-import { CategoryResolver } from './category.resolver'
+import { CategoryResolver } from './category.resolver';
 
 @Module({
-    imports: [
-        forwardRef(() => AppModule)
-    ],
-    providers: [
-        CategoryService,
-        CategoryResolver,
-        IsCategoryExistsConstraint
-    ]
+  imports: [forwardRef(() => AppModule)],
+  providers: [CategoryService, CategoryResolver, IsCategoryExistsConstraint],
 })
 export class CategoryModule {}

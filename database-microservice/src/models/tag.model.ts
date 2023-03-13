@@ -1,8 +1,14 @@
-import { Model, Table, Column, DataType, BelongsToMany } from 'sequelize-typescript';
+import {
+  Model,
+  Table,
+  Column,
+  DataType,
+  BelongsToMany,
+} from 'sequelize-typescript';
 
 //FOREIGN
-import { ProjectTag } from './project_tag.model'
-import { Project } from './project.model'
+import { ProjectTag } from './project_tag.model';
+import { Project } from './project.model';
 
 @Table({ tableName: 'tags' })
 export class Tag extends Model<Tag> {
@@ -10,16 +16,16 @@ export class Tag extends Model<Tag> {
     type: DataType.INTEGER,
     unique: true,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
   })
-  id: number
+  id: number;
 
   @Column({
     type: DataType.TEXT,
     unique: true,
-    allowNull: false
+    allowNull: false,
   })
-  name: string
+  name: string;
 
   @BelongsToMany(() => Project, () => ProjectTag)
   projects: Project[];

@@ -1,10 +1,10 @@
-import Express from "express"
-import { IUserToken } from '../user/user'
+import Express from 'express';
+import { IUserToken } from '../user/user';
 
 declare global {
-    namespace Express {
-        interface Request {
-            user?: IUserToken
-        }
+  namespace Express {
+    interface Request {
+      user?: IUserToken;
     }
+  }
 }

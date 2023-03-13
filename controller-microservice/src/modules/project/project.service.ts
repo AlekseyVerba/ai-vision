@@ -1,189 +1,242 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { ClientProxy } from "@nestjs/microservices";
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 
 //INPUT TYPES
-import { CreateProjectInput } from './inputTypes/create-project.input'
-import { GetProjectsInput } from './inputTypes/get-projects.input'
-import { DeleteFileInput } from './inputTypes/delete-file.input'
-import { AddDeleteFavoriteProjectInput } from './inputTypes/add-delete-favorite-project.input'
-import { DeleteProjectInput } from './inputTypes/delete-project.input'
-import { UpdateProjectInput } from './inputTypes/update-project.input'
+import { CreateProjectInput } from './inputTypes/create-project.input';
+import { GetProjectsInput } from './inputTypes/get-projects.input';
+import { DeleteFileInput } from './inputTypes/delete-file.input';
+import { AddDeleteFavoriteProjectInput } from './inputTypes/add-delete-favorite-project.input';
+import { DeleteProjectInput } from './inputTypes/delete-project.input';
+import { UpdateProjectInput } from './inputTypes/update-project.input';
+import { GetProjectPrivateFileInput } from './inputTypes/get-project.input';
 
 //SERVICES
-import { FileService } from "../file/file.service";
-import { lastValueFrom } from "rxjs";
-import { GraphQLError } from "graphql";
-import { FileUpload } from "src/types/file/file";
+import { FileService } from '../file/file.service';
+import { lastValueFrom } from 'rxjs';
+import { GraphQLError } from 'graphql';
+import { FileUpload } from 'src/types/file/file';
 
 @Injectable()
 export class ProjectService {
-    constructor(
-        @Inject('DB_MICROSERVICE') private client: ClientProxy,
-        private readonly fileService: FileService
-    ) {}
+  constructor(
+    @Inject('DB_MICROSERVICE') private client: ClientProxy,
+    private readonly fileService: FileService,
+  ) {}
 
-    async getProjects(dto: GetProjectsInput) {
-        return lastValueFrom(this.client.send('get-projects', dto))
+  async getProjects(dto: GetProjectsInput) {
+    return lastValueFrom(this.client.send('get-projects', dto));
+  }
+
+  async getProjectPrivateFile(dto: GetProjectPrivateFileInput) {
+    return lastValueFrom(this.client.send('get-project-private-file', dto));
+  }
+
+  async createProject({
+    files,
+    avatar,
+    private_files,
+    ...dto
+  }: CreateProjectInput) {
+    if (private_files) {
+      dto.privateFilePath = await this.uploadPrivateFilesToZip({
+        files: private_files,
+        uid: dto.uid,
+      });
     }
 
-    async createProject({files, avatar, private_files ,...dto}: CreateProjectInput) {
-        console.log('lolo')
-        console.log(private_files)
-        if (private_files) {
-            const privateFilePath = await this.uploadPrivateFilesToZip({ files: private_files, uid: dto.uid })
-            console.log(privateFilePath)
-        }
-
-        // if (files) {
-        //     dto.filesPath = await this.uploadProjectFiles({files, uid: dto.uid})
-        // }
-
-        // if (avatar) {
-        //     const { defaultImage, middle } = await this.uploadProjectAvatars({ avatar, uid: dto.uid })
-
-        //     dto.avatars = {
-        //         default: defaultImage,
-        //         middle
-        //     }
-
-        // }
-
-        // return await lastValueFrom(this.client.send('create-project', dto))
-
+    if (files) {
+      dto.filesPath = await this.uploadProjectFiles({ files, uid: dto.uid });
     }
 
-    async updateProject({ files, avatar, ...dto }: UpdateProjectInput) {
-        const isUserAuthor = lastValueFrom(this.client.send('check-user-author-project', {uid: dto.uid, id: dto.id}))
+    if (avatar) {
+      const { defaultImage, middle } = await this.uploadProjectAvatars({
+        avatar,
+        uid: dto.uid,
+      });
 
-        if (!isUserAuthor) {
-            throw new GraphQLError(
-                'You can\'t update this project! You are not an author of this project.'
-            )
-        }
-
-        if (avatar) {
-            const oldAvatars = await this.getProjectAvatars(dto.id)
-
-            if (oldAvatars.middle) {
-                this.fileService.deleteFile(oldAvatars.middle)
-            }
-    
-            if (oldAvatars.default) {
-                this.fileService.deleteFile(oldAvatars.default)
-            }
-
-            const { defaultImage, middle } = await this.uploadProjectAvatars({ avatar, uid: dto.uid })
-
-            dto.avatars = {
-                default: defaultImage,
-                middle
-            }
-        }
-
-        if (files) {
-            dto.filesPath = await this.uploadProjectFiles({files, uid: dto.uid})
-        }
-
-        return await lastValueFrom(this.client.send('update-project', dto))
+      dto.avatars = {
+        default: defaultImage,
+        middle,
+      };
     }
 
-    async deleteProject(dto: DeleteProjectInput) {
-        const project = await lastValueFrom(this.client.send('delete-project', dto))
+    return await lastValueFrom(this.client.send('create-project', dto));
+  }
 
-        if (project.files && project.files.length) {
-            project.files.forEach(file => {
-                this.fileService.deleteFile(file.value)
-            });
-        }
+  async updateProject({ files, avatar, ...dto }: UpdateProjectInput) {
+    const isUserAuthor = lastValueFrom(
+      this.client.send('check-user-author-project', {
+        uid: dto.uid,
+        id: dto.id,
+      }),
+    );
 
-        if (project.avatars.middle) {
-            this.fileService.deleteFile(project.avatars.middle)
-        }
-
-        if (project.avatars.default) {
-            this.fileService.deleteFile(project.avatars.default)
-        }
-
-        return true
+    if (!isUserAuthor) {
+      throw new GraphQLError(
+        "You can't update this project! You are not an author of this project.",
+      );
     }
 
-    async getProjectAvatars(id: number) {
-        return lastValueFrom(this.client.send('get-project-avatars', id))
+    if (avatar) {
+      const oldAvatars = await this.getProjectAvatars(dto.id);
+
+      if (oldAvatars.middle) {
+        this.fileService.deleteFile(oldAvatars.middle);
+      }
+
+      if (oldAvatars.default) {
+        this.fileService.deleteFile(oldAvatars.default);
+      }
+
+      const { defaultImage, middle } = await this.uploadProjectAvatars({
+        avatar,
+        uid: dto.uid,
+      });
+
+      dto.avatars = {
+        default: defaultImage,
+        middle,
+      };
     }
 
-    async addToFavorite(dto: AddDeleteFavoriteProjectInput) {
-        return lastValueFrom(this.client.send('add-to-favorite', dto))
+    if (files) {
+      dto.filesPath = await this.uploadProjectFiles({ files, uid: dto.uid });
     }
 
-    async deleteFromFavorite(dto: AddDeleteFavoriteProjectInput) {
-        return lastValueFrom(this.client.send('delete-from-favorite', dto))
+    return await lastValueFrom(this.client.send('update-project', dto));
+  }
+
+  async deleteProject(dto: DeleteProjectInput) {
+    const project = await lastValueFrom(
+      this.client.send('delete-project', dto),
+    );
+
+    if (project.files && project.files.length) {
+      project.files.forEach((file) => {
+        this.fileService.deleteFile(file.value);
+      });
     }
 
-    async deleteFileProject(dto: DeleteFileInput) {
-        const filePath = await lastValueFrom(this.client.send('delete-file-project', dto))
-
-        if (filePath) {
-            this.fileService.deleteFile(filePath)
-        }
-
-        return true
+    if (project.avatars.middle) {
+      this.fileService.deleteFile(project.avatars.middle);
     }
 
-    async getProjectById(id: number) {
-        return lastValueFrom(this.client.send('get-project-by-id', id))
+    if (project.avatars.default) {
+      this.fileService.deleteFile(project.avatars.default);
     }
 
-    async getProjectFile(id: number) {
-        return lastValueFrom(this.client.send('get-project-file', id))
+    return true;
+  }
+
+  async getProjectAvatars(id: number) {
+    return lastValueFrom(this.client.send('get-project-avatars', id));
+  }
+
+  async addToFavorite(dto: AddDeleteFavoriteProjectInput) {
+    return lastValueFrom(this.client.send('add-to-favorite', dto));
+  }
+
+  async deleteFromFavorite(dto: AddDeleteFavoriteProjectInput) {
+    return lastValueFrom(this.client.send('delete-from-favorite', dto));
+  }
+
+  async deleteFileProject(dto: DeleteFileInput) {
+    const filePath = await lastValueFrom(
+      this.client.send('delete-file-project', dto),
+    );
+
+    if (filePath) {
+      this.fileService.deleteFile(filePath);
     }
 
-    async getProjectFiles(id: number) {
-        return lastValueFrom(this.client.send('get-project-files', id))
-    }
+    return true;
+  }
 
-    async getProjectAuthor(id: number) {
-        return lastValueFrom(this.client.send('get-project-author', id))
-    }
+  async getProjectById(id: number) {
+    return lastValueFrom(this.client.send('get-project-by-id', id));
+  }
 
-    async getProjectTags(id: number) {
-        return lastValueFrom(this.client.send('get-project-tags', id))
-    }
+  async getProjectFile(id: number) {
+    return lastValueFrom(this.client.send('get-project-file', id));
+  }
 
-    async getProjectCategory(id: number) {
-        return lastValueFrom(this.client.send('get-project-category', id))
-    }
+  async getProjectFiles(id: number) {
+    return lastValueFrom(this.client.send('get-project-files', id));
+  }
 
-    async uploadProjectAvatars({ avatar, uid }: {avatar: Promise<FileUpload>, uid: string}) {
-        const normalAvatar = await avatar
-        const buff = await this.fileService.getBufferFromRead(normalAvatar)
+  async getProjectAuthor(id: number) {
+    return lastValueFrom(this.client.send('get-project-author', id));
+  }
 
-        const [defaultImage, middle] = await Promise.all([
-            this.fileService.uploadFile({ file: { buff, filename: normalAvatar.filename }, dir: `user/${uid}/projects` }),
-            this.fileService.createResizedImage({buff, filename: normalAvatar.filename}, `user/${uid}/projects`, 70, {
-                height: 260,width: 230, options: {
-                    fit: 'contain'
-                }
-            })
-        ])
+  async getProjectTags(id: number) {
+    return lastValueFrom(this.client.send('get-project-tags', id));
+  }
 
-        return {
-            defaultImage,
-            middle
-        }
-    }
+  async getProjectCategory(id: number) {
+    return lastValueFrom(this.client.send('get-project-category', id));
+  }
 
-    async uploadProjectFiles({ files, uid }: {
-        files: Promise<FileUpload>[]
-        uid: string
-    }) {
-        return await Promise.all(files.map(async file => {
-            const { createReadStream, filename } = await file;
-            const stream = createReadStream()
-            return this.fileService.uploadFileStream({ file: { stream, filename }, dir: `user/${uid}/projects` })
-        }))
-    }
+  async uploadProjectAvatars({
+    avatar,
+    uid,
+  }: {
+    avatar: Promise<FileUpload>;
+    uid: string;
+  }) {
+    const normalAvatar = await avatar;
+    const buff = await this.fileService.getBufferFromRead(normalAvatar);
 
-    async uploadPrivateFilesToZip({files, uid}: {files: Promise<FileUpload>[], uid: string}) {
-        return this.fileService.createZIPWithFiles({files, uid})
-    }
+    const [defaultImage, middle] = await Promise.all([
+      this.fileService.uploadFile({
+        file: { buff, filename: normalAvatar.filename },
+        dir: `user/${uid}/projects`,
+      }),
+      this.fileService.createResizedImage(
+        { buff, filename: normalAvatar.filename },
+        `user/${uid}/projects`,
+        70,
+        {
+          height: 260,
+          width: 230,
+          options: {
+            fit: 'contain',
+          },
+        },
+      ),
+    ]);
+
+    return {
+      defaultImage,
+      middle,
+    };
+  }
+
+  async uploadProjectFiles({
+    files,
+    uid,
+  }: {
+    files: Promise<FileUpload>[];
+    uid: string;
+  }) {
+    return await Promise.all(
+      files.map(async (file) => {
+        const { createReadStream, filename } = await file;
+        const stream = createReadStream();
+        return this.fileService.uploadFileStream({
+          file: { stream, filename },
+          dir: `user/${uid}/projects`,
+        });
+      }),
+    );
+  }
+
+  async uploadPrivateFilesToZip({
+    files,
+    uid,
+  }: {
+    files: Promise<FileUpload>[];
+    uid: string;
+  }) {
+    return this.fileService.createZIPWithFiles({ files, uid });
+  }
 }

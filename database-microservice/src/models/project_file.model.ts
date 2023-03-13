@@ -1,10 +1,20 @@
-import { Model, Table, Column, DataType, HasMany, HasOne, BelongsToMany, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import {
+  Model,
+  Table,
+  Column,
+  DataType,
+  HasMany,
+  HasOne,
+  BelongsToMany,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
 
 //ENUMS
-import { FILE_TYPE } from 'src/constants/file/file.constant'
+import { FILE_TYPE } from 'src/constants/file/file.constant';
 
 //FOREIGN
-import { Project } from './project.model'
+import { Project } from './project.model';
 
 @Table({ tableName: 'project_files' })
 export class ProjecFile extends Model<ProjecFile> {
@@ -12,29 +22,29 @@ export class ProjecFile extends Model<ProjecFile> {
     type: DataType.INTEGER,
     unique: true,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
   })
-  id: number
+  id: number;
 
   @Column({
     type: DataType.TEXT,
-    allowNull: false
+    allowNull: false,
   })
-  type: FILE_TYPE
+  type: FILE_TYPE;
 
   @Column({
     type: DataType.TEXT,
-    unique: true
+    unique: true,
   })
-  value: string
+  value: string;
 
   @ForeignKey(() => Project)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false
+    allowNull: false,
   })
-  project_id: number
+  project_id: number;
 
-  @BelongsTo(() => Project, {onDelete: 'cascade'})
-  project: Project
+  @BelongsTo(() => Project, { onDelete: 'cascade' })
+  project: Project;
 }

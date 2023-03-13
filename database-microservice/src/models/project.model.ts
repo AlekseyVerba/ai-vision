@@ -1,85 +1,94 @@
-import { Model, Table, Column, DataType, HasMany, HasOne, BelongsToMany, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import {
+  Model,
+  Table,
+  Column,
+  DataType,
+  HasMany,
+  HasOne,
+  BelongsToMany,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
 
 //FOREIGN
-import { User } from './user.model'
-import { Category } from './category.model'
-import { ProjectTag } from './project_tag.model'
-import { Tag } from './tag.model'
-import { ProjectAvatars } from './project_avatars.model'
-import { ProjecFile } from './project_file.model'
+import { User } from './user.model';
+import { Category } from './category.model';
+import { ProjectTag } from './project_tag.model';
+import { Tag } from './tag.model';
+import { ProjectAvatars } from './project_avatars.model';
+import { ProjecFile } from './project_file.model';
 import { UserProjectFavorite } from './user_project_favorite.model';
-import { ProjecPrivateFile } from './project_private_file.model'
+import { ProjecPrivateFile } from './project_private_file.model';
 
 @Table({ tableName: 'projects' })
 export class Project extends Model<Project> {
-    @Column({
-      type: DataType.INTEGER,
-      unique: true,
-      autoIncrement: true,
-      primaryKey: true
-    })
-    id: number
-  
-    @Column({
-        type: DataType.TEXT,
-        allowNull: false
-    })
-    title: string
-    
-    @Column({
-        type: DataType.TEXT,
-    })
-    description: string
+  @Column({
+    type: DataType.INTEGER,
+    unique: true,
+    autoIncrement: true,
+    primaryKey: true,
+  })
+  id: number;
 
-    @Column({
-        type: DataType.TEXT,
-    })
-    source: string
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+  })
+  title: string;
 
-    @Column({
-        type: DataType.BOOLEAN,
-        defaultValue: true
-    })
-    is_active: boolean
+  @Column({
+    type: DataType.TEXT,
+  })
+  description: string;
 
+  @Column({
+    type: DataType.TEXT,
+  })
+  source: string;
 
-    @Column({
-        type: DataType.INTEGER
-    })
-    price: number
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: true,
+  })
+  is_active: boolean;
 
-    @ForeignKey(() => User)
-    @Column({
-        type: DataType.UUID,
-        allowNull: false
-    })
-    author_uid: string
+  @Column({
+    type: DataType.INTEGER,
+  })
+  price: number;
 
-    @ForeignKey(() => Category)
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    category_id: number
+  @ForeignKey(() => User)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  author_uid: string;
 
-    @HasOne(() => ProjectAvatars)
-    avatars: ProjectAvatars
+  @ForeignKey(() => Category)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  category_id: number;
 
-    @HasOne(() => ProjecPrivateFile)
-    private_file: ProjecPrivateFile
+  @HasOne(() => ProjectAvatars)
+  avatars: ProjectAvatars;
 
-    @HasMany(() => ProjecFile)
-    files: ProjecFile[]
+  @HasOne(() => ProjecPrivateFile)
+  private_file: ProjecPrivateFile;
 
-    @BelongsTo(() => User, { onDelete: 'cascade' })
-    author: User
+  @HasMany(() => ProjecFile)
+  files: ProjecFile[];
 
-    @BelongsTo(() => Category)
-    category: Category
+  @BelongsTo(() => User, { onDelete: 'cascade' })
+  author: User;
 
-    @BelongsToMany(() => User, () => UserProjectFavorite)
-    users_favorite: User[];
+  @BelongsTo(() => Category)
+  category: Category;
 
-    @BelongsToMany(() => Tag, () => ProjectTag)
-    tags: Tag[];
+  @BelongsToMany(() => User, () => UserProjectFavorite)
+  users_favorite: User[];
+
+  @BelongsToMany(() => Tag, () => ProjectTag)
+  tags: Tag[];
 }

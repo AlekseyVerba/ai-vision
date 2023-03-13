@@ -1,4 +1,4 @@
 export interface DeleteProjectFileDto {
-    id: number
-    uid: string
+  id: number;
+  uid: string;
 }

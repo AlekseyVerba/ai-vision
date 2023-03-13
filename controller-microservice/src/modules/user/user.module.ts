@@ -1,32 +1,29 @@
-import { forwardRef, Module } from "@nestjs/common";
+import { forwardRef, Module } from '@nestjs/common';
 
 //SERVICES
-import { UserService } from './user.service'
+import { UserService } from './user.service';
 
 //RESOLVERS
-import { UserResolver } from './user.resolver'
+import { UserResolver } from './user.resolver';
 
 //MODULES
-import { AppModule } from "src/app.module"
-import { FileModule } from 'src/modules/file/file.module'
+import { AppModule } from 'src/app.module';
+import { FileModule } from 'src/modules/file/file.module';
 
 //VALIDATIONS
-import { IsUserNotExistByEmailConstraint } from 'src/validations/userNotExistByEmail.validation'
-import { IsUserNotExistByNameConstraint } from 'src/validations/userNotExistByName.validation'
-import { IsUserExistByEmailConstraint } from 'src/validations/userExistByEmail.validation'
+import { IsUserNotExistByEmailConstraint } from 'src/validations/userNotExistByEmail.validation';
+import { IsUserNotExistByNameConstraint } from 'src/validations/userNotExistByName.validation';
+import { IsUserExistByEmailConstraint } from 'src/validations/userExistByEmail.validation';
 
 @Module({
-    imports: [
-        forwardRef(() => AppModule),
-        FileModule
-    ],
-    providers: [
-        UserService,
-        UserResolver,
-        IsUserNotExistByEmailConstraint,
-        IsUserNotExistByNameConstraint,
-        IsUserExistByEmailConstraint
-    ],
-    exports: [UserService]
+  imports: [forwardRef(() => AppModule), FileModule],
+  providers: [
+    UserService,
+    UserResolver,
+    IsUserNotExistByEmailConstraint,
+    IsUserNotExistByNameConstraint,
+    IsUserExistByEmailConstraint,
+  ],
+  exports: [UserService],
 })
 export class UserModule {}

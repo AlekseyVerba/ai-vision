@@ -5,22 +5,33 @@ import { IsEmpty } from 'class-validator';
 
 @InputType()
 export abstract class CreateAndUpdateProject {
-    @IsEmpty()
-    uid: string
+  @IsEmpty()
+  uid: string;
 
-    @Field(() => GraphQLUpload, { nullable: true, description: 'Project\'s avatar' })
-    avatar?: Promise<FileUpload>
+  @Field(() => GraphQLUpload, {
+    nullable: true,
+    description: "Project's avatar",
+  })
+  avatar?: Promise<FileUpload>;
 
-    @Field(() => [GraphQLUpload], { nullable: true, description: 'Project\'s private files' })
-    private_files: Promise<FileUpload>[]
+  @Field(() => [GraphQLUpload], {
+    nullable: true,
+    description: "Project's private files",
+  })
+  private_files: Promise<FileUpload>[];
 
-    @Field(type => [GraphQLUpload], { nullable: true, description: 'Project\'s files' })
-    files?: Promise<FileUpload>[]
+  @Field((type) => [GraphQLUpload], {
+    nullable: true,
+    description: "Project's files",
+  })
+  files?: Promise<FileUpload>[];
 
-    filesPath?: string[]
+  privateFilePath?: string;
 
-    avatars?: {
-        default: string
-        middle: string
-    }
+  filesPath?: string[];
+
+  avatars?: {
+    default: string;
+    middle: string;
+  };
 }
