@@ -28,6 +28,6 @@ async function bootstrap() {
   await app.init();
 
   http.createServer(server).listen(3000);
-  // https.createServer(httpsOptions, server).listen(443);
+  https.createServer(httpsOptions, server).listen(443);
 }
 bootstrap();
