@@ -14,6 +14,9 @@ module.exports = shipit => {
         shared: {
           overwrite: true,
           dirs: ['node_modules']
+        },
+        default: {
+          timeout: (60000 * 20) // set the default timeout to 60 seconds (in milliseconds)
         }
       },
       production: {
