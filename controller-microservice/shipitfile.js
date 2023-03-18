@@ -81,7 +81,9 @@ module.exports = shipit => {
 
 
         shipit.blTask('npm-install', async () => {
-            await shipit.remote(`cd ${shipit.releasePath}/controller-microservice && npm install`),
+            await shipit.remote(`cd ${shipit.releasePath}/controller-microservice && npm install`,{
+              timeout: (60000 * 5)
+            }),
             await shipit.remote(`cd ${shipit.releasePath}/mailer-microservice && npm install`),
             await shipit.remote(`cd ${shipit.releasePath}/database-microservice && npm install`)
           });
