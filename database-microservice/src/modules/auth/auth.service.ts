@@ -145,6 +145,11 @@ export class AuthService {
 
       await transaction.commit();
 
+      this.clientMailer.emit('message.confirm-registration-success', {
+        name: user.name,
+        email: user.email,
+      });
+
       const jwt_token = this.createJwtToken(user);
 
       return {
@@ -179,12 +184,19 @@ export class AuthService {
 
       const newHashPassword = await hash(password, 10);
 
-      await this.userRepository.update(
-        { password: newHashPassword },
-        { where: { uid: currentToken.user_uid } },
-      );
+      const user = (
+        await this.userRepository.update(
+          { password: newHashPassword },
+          { where: { uid: currentToken.user_uid }, returning: true },
+        )
+      )[1][0];
 
       await transaction.commit();
+
+      this.clientMailer.emit('message.update-password', {
+        name: user.name,
+        email: user.email,
+      });
 
       return 'Password has been successufully changed!';
     } catch (err) {

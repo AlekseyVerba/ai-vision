@@ -4,7 +4,8 @@ import { AppController } from './app.controller';
 //MODULES
 import { ConfigModule } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { AuthModule } from './auth/auth.module'
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 //SERVICES
 import { AppService } from './app.service';
@@ -15,7 +16,7 @@ import { join } from 'path';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: join(__dirname, '..', '.env')
+      envFilePath: join(__dirname, '..', '.env'),
     }),
     MailerModule.forRoot({
       transport: {
@@ -28,12 +29,13 @@ import { join } from 'path';
       },
       defaults: {
         from: '<verba.20@bk.ru>',
-      }
+      },
     }),
-    AuthModule
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
-  exports: [MailerModule]
+  exports: [MailerModule],
 })
 export class AppModule {}

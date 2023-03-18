@@ -7,6 +7,7 @@ import {
   HasMany,
   BelongsToMany,
   BeforeCreate,
+  BeforeUpdate,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { hash } from 'bcrypt';
@@ -78,6 +79,11 @@ export class User extends Model<User> {
     allowNull: false,
   })
   password: string;
+
+  @Column({
+    type: DataType.TEXT,
+  })
+  cover_path: string;
 
   @Column({
     type: DataType.BOOLEAN,

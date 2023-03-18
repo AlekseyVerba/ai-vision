@@ -12,7 +12,9 @@ import { AddDeleteFavoriteProjectDto } from './dto/add-delete-favorite-project.d
 import { DeleteProjectDto } from './dto/delete-project.dto';
 import { CheckUserAuthorProjectDto } from './dto/check-user-author-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { GetProjectPrivateFileDto } from './dto/get-project-private-file.dto'
+import { GetProjectPrivateFileDto } from './dto/get-project-private-file.dto';
+import { GetNextAndPreviousProjectDto } from './dto/get-next-and-previous-project.dto';
+import { GetUserProjectByUid } from './dto/get-user-projects-by-uid.dto';
 
 @Controller('project')
 export class ProjectController {
@@ -26,6 +28,16 @@ export class ProjectController {
   @MessagePattern('get-projects')
   async getProjects(dto: GetProjectsDto) {
     return this.projectService.getProjects(dto);
+  }
+
+  @MessagePattern('get-user-projects')
+  async getUserProjects(dto: GetUserProjectByUid) {
+    return this.projectService.getProjects(dto);
+  }
+
+  @MessagePattern('get-user-favorite-projects')
+  async getUserFavoriteProjects(dto: GetUserProjectByUid) {
+    return this.projectService.getProjects({ ...dto, favorite: true });
   }
 
   @MessagePattern('get-project-private-file')
@@ -66,6 +78,16 @@ export class ProjectController {
   @MessagePattern('get-project-by-id')
   async getProjectById(id: number) {
     return this.projectService.getProjectById(id);
+  }
+
+  @MessagePattern('get-next-project-by-id')
+  async getNextProjectById(dto: GetNextAndPreviousProjectDto) {
+    return this.projectService.getNextProjectById(dto);
+  }
+
+  @MessagePattern('get-previous-project-by-id')
+  async getPreviousProjectById(dto: GetNextAndPreviousProjectDto) {
+    return this.projectService.getPreviousProjectById(dto);
   }
 
   @MessagePattern('delete-file-project')

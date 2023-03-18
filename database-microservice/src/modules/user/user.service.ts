@@ -1,4 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { hash } from 'bcrypt';
 
 //MODELS
 import { User } from 'src/models/user.model';
@@ -9,6 +11,7 @@ import { InjectModel } from '@nestjs/sequelize';
 
 //DTOS
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 
 @Injectable()
 export class UserService {
@@ -18,6 +21,8 @@ export class UserService {
 
     @InjectModel(UserAvatars)
     private userAvatarsRepository: typeof UserAvatars,
+
+    @Inject('MAILER_MICROSERVICE') private clientMailer: ClientProxy,
   ) {}
 
   async getUserAvatars(uid: string) {
@@ -44,8 +49,26 @@ export class UserService {
     )[1][0];
   }
 
+  async updateUserPassword({ uid, password }: UpdateUserPasswordDto) {
+    const user = await this.userRepository.findByPk(uid);
+
+    const saltRounds = 10;
+    password = await hash(password, saltRounds);
+
+    await user.update({ password });
+
+    this.clientMailer.emit('message.update-password', {
+      name: user.name,
+      email: user.email,
+    });
+
+    return { value: 'Successful' };
+  }
+
   async getUserByUid(uid: string) {
-    return this.userRepository.findByPk(uid);
+    const res = await this.userRepository.findOne({ where: { uid } });
+    console.log(res);
+    return res;
   }
 
   async getUserByName(name: string) {

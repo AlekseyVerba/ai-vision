@@ -6,6 +6,7 @@ import { UserService } from './user.service';
 
 //DTOS
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 
 @Controller('user')
 export class UserController {
@@ -19,6 +20,11 @@ export class UserController {
   @MessagePattern('update-user')
   async updateUser(dto: UpdateUserDto) {
     return this.userService.updateUser(dto);
+  }
+
+  @MessagePattern('update-user-password')
+  async updateUserPassword(dto: UpdateUserPasswordDto) {
+    return this.userService.updateUserPassword(dto);
   }
 
   @MessagePattern('get-user-by-uid')

@@ -18,7 +18,9 @@ import { AddDeleteFavoriteProjectDto } from './dto/add-delete-favorite-project.d
 import { DeleteProjectDto } from './dto/delete-project.dto';
 import { CheckUserAuthorProjectDto } from './dto/check-user-author-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { GetProjectPrivateFileDto } from './dto/get-project-private-file.dto'
+import { GetProjectPrivateFileDto } from './dto/get-project-private-file.dto';
+import { GetNextAndPreviousProjectDto } from './dto/get-next-and-previous-project.dto';
+import { GetUserProjectByUid } from './dto/get-user-projects-by-uid.dto';
 
 //ENUMS
 import { FILE_TYPE } from 'src/constants/file/file.constant';
@@ -79,6 +81,60 @@ export class ProjectService {
 
   async getProjectById(id: number) {
     return await this.projectRepository.findByPk(id);
+  }
+
+  async getNextProjectById({
+    project_id,
+    author_uid,
+    category_id,
+  }: GetNextAndPreviousProjectDto) {
+    const where: any = {
+      id: {
+        [Op.gt]: project_id, // assuming you have the current ID of the element
+      },
+    };
+
+    if (author_uid) {
+      where.author_uid = author_uid;
+    }
+
+    if (category_id) {
+      where.category_id = category_id;
+    }
+
+    return await this.projectRepository.findOne({
+      where,
+      order: [
+        ['id', 'ASC'], // assuming you want to order by ID in ascending order
+      ],
+    });
+  }
+
+  async getPreviousProjectById({
+    project_id,
+    author_uid,
+    category_id,
+  }: GetNextAndPreviousProjectDto) {
+    const where: any = {
+      id: {
+        [Op.lt]: project_id, // assuming you have the current ID of the element
+      },
+    };
+
+    if (author_uid) {
+      where.author_uid = author_uid;
+    }
+
+    if (category_id) {
+      where.category_id = category_id;
+    }
+
+    return await this.projectRepository.findOne({
+      where,
+      order: [
+        ['id', 'DESC'], // assuming you want to order by ID in ascending order
+      ],
+    });
   }
 
   async addToFavorite({ id, uid }: AddDeleteFavoriteProjectDto) {
@@ -155,7 +211,9 @@ export class ProjectService {
     sort,
     category_id,
     search = '',
-  }: GetProjectsDto) {
+    uid,
+    favorite,
+  }: GetUserProjectByUid) {
     let order;
     let group = [];
     switch (sort) {
@@ -193,6 +251,18 @@ export class ProjectService {
       where.category_id = category_id;
     }
 
+    if (uid) {
+      where.author_uid = uid;
+    }
+
+    if (favorite) {
+      where[Op.and] = [
+        sequelize.where(sequelize.col('users_favorite.uid'), {
+          [Op.eq]: uid,
+        }),
+      ];
+    }
+
     const subquery = await this.projectRepository.findAll({
       attributes: ['id'],
       where,
@@ -200,6 +270,14 @@ export class ProjectService {
         {
           model: Tag,
           required: false,
+          attributes: [],
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: User,
+          as: 'users_favorite',
           attributes: [],
           through: {
             attributes: [],
@@ -229,6 +307,7 @@ export class ProjectService {
       offset,
     });
   }
+
   async createProject({
     filesPath,
     avatars,
@@ -432,21 +511,21 @@ export class ProjectService {
   }
 
   async getProjectPrivateFile({ uid, project_id }: GetProjectPrivateFileDto) {
-    console.log("tottottoototot")
-    console.log(uid)
+    console.log('tottottoototot');
+    console.log(uid);
     return await this.projectPrivateFileRepository.findOne({
       where: {
-        project_id
+        project_id,
       },
       include: [
         {
           model: User,
-          where: {uid: uid || null},
+          where: { uid: uid || null },
           attributes: [],
-          required: true
-        }
-      ]
-    })
+          required: true,
+        },
+      ],
+    });
   }
 
   async getProjectAuthor(id: number) {
