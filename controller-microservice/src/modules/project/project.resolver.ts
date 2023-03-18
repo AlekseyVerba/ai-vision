@@ -34,6 +34,8 @@ import { AddDeleteFavoriteProjectInput } from './inputTypes/add-delete-favorite-
 import { DeleteProjectInput } from './inputTypes/delete-project.input';
 import { UpdateProjectInput } from './inputTypes/update-project.input';
 import { GetProjectPrivateFileInput } from './inputTypes/get-project.input';
+import { GetNextAndPreviousProjectInput } from './inputTypes/get-next-and-previous-project.input';
+import { GetUserProjectByUid } from './inputTypes/get-user-projects-by-uid.input';
 
 //PIPES
 import { ValidationPipe } from 'src/pipes/validation.pipe';
@@ -43,16 +45,50 @@ import { ValidationPipe } from 'src/pipes/validation.pipe';
 export class ProjectResolver {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Query((returns) => Project, { description: 'Get a project' })
+  @Query((returns) => Project, { nullable: true, description: 'Get a project' })
   async getProject(
     @Args('getProjectData') { project_id }: GetProjectPrivateFileInput,
   ) {
     return await this.projectService.getProjectById(project_id);
   }
 
+  @Query((returns) => Project, {
+    nullable: true,
+    description: 'Get next project',
+  })
+  async getNextProjectById(
+    @Args('getProjectData') dto: GetNextAndPreviousProjectInput,
+  ) {
+    return await this.projectService.getNextProjectById(dto);
+  }
+
+  @Query((returns) => Project, {
+    nullable: true,
+    description: 'Get previous project',
+  })
+  async getPreviousProjectById(
+    @Args('getProjectData') dto: GetNextAndPreviousProjectInput,
+  ) {
+    return await this.projectService.getPreviousProjectById(dto);
+  }
+
   @Query((returns) => [Project!], { description: 'Get projects' })
   async getProjects(@Args('getProjectData') getProjectData: GetProjectsInput) {
     return await this.projectService.getProjects(getProjectData);
+  }
+
+  @Query((returns) => [Project!], { description: 'Get user projects' })
+  async getUserProjects(
+    @Args('getProjectData') getProjectData: GetUserProjectByUid,
+  ) {
+    return await this.projectService.getUserProjects(getProjectData);
+  }
+
+  @Query((returns) => [Project!], { description: 'Get user favorite projects' })
+  async getUserFavoriteProjects(
+    @Args('getProjectData') getProjectData: GetUserProjectByUid,
+  ) {
+    return await this.projectService.getUserFavoriteProjects(getProjectData);
   }
 
   @Mutation((returns) => Boolean, {

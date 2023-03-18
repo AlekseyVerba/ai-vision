@@ -31,6 +31,9 @@ export class User {
   pinterest_link?: string;
 
   @Field({ nullable: true })
+  cover_path?: string;
+
+  @Field({ nullable: true })
   telegram_link?: string;
 
   @Field()

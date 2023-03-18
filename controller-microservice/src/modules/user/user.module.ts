@@ -14,6 +14,7 @@ import { FileModule } from 'src/modules/file/file.module';
 import { IsUserNotExistByEmailConstraint } from 'src/validations/userNotExistByEmail.validation';
 import { IsUserNotExistByNameConstraint } from 'src/validations/userNotExistByName.validation';
 import { IsUserExistByEmailConstraint } from 'src/validations/userExistByEmail.validation';
+import { IsUserExistByUidConstraint } from 'src/validations/userExistByUid.validation';
 
 @Module({
   imports: [forwardRef(() => AppModule), FileModule],
@@ -23,6 +24,7 @@ import { IsUserExistByEmailConstraint } from 'src/validations/userExistByEmail.v
     IsUserNotExistByEmailConstraint,
     IsUserNotExistByNameConstraint,
     IsUserExistByEmailConstraint,
+    IsUserExistByUidConstraint,
   ],
   exports: [UserService],
 })

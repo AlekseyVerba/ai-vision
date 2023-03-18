@@ -29,6 +29,11 @@ export class UpdateUserInput {
   telegram_link?: string;
 
   @Field(() => GraphQLUpload)
+  cover?: Promise<FileUpload>;
+
+  cover_path?: string;
+
+  @Field(() => GraphQLUpload)
   avatar?: Promise<FileUpload>;
 
   avatars?: {

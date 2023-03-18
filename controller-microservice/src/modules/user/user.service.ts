@@ -9,9 +9,7 @@ import { FileService } from 'src/modules/file/file.service';
 
 //INPUT TYPES
 import { UpdateUserInput } from './inputTypes/update-user.input';
-
-//MODELS
-import { User } from './models/user.model';
+import { UpdateUserPasswordInput } from './inputTypes/update-user-password.input';
 
 @Injectable()
 export class UserService {
@@ -20,7 +18,7 @@ export class UserService {
     private readonly fileService: FileService,
   ) {}
 
-  async updateUser({ avatar, ...dto }: UpdateUserInput) {
+  async updateUser({ avatar, cover, ...dto }: UpdateUserInput) {
     if (avatar) {
       const normalAvatar = await avatar;
       const buff = await this.fileService.getBufferFromRead(normalAvatar);
@@ -81,7 +79,31 @@ export class UserService {
       };
     }
 
+    if (cover) {
+      const normalCover = await cover;
+      const buff = await this.fileService.getBufferFromRead(normalCover);
+
+      const user = await this.getUserByUid(dto.uid);
+
+      if (user.cover_path) {
+        this.fileService.deleteFile(user.cover_path);
+      }
+
+      dto.cover_path = await this.fileService.uploadFile({
+        file: { buff, filename: normalCover.filename },
+        dir: `user/${dto.uid}`,
+      });
+    }
+
     return await lastValueFrom(this.client.send('update-user', dto));
+  }
+
+  async updateUserPassword(dto: UpdateUserPasswordInput) {
+    return await lastValueFrom(this.client.send('update-user-password', dto));
+  }
+
+  async getUserByUid(uid: string) {
+    return lastValueFrom(this.client.send('get-user-by-uid', uid));
   }
 
   async getUserByEmail(email: string) {
