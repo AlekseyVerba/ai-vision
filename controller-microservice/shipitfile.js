@@ -5,6 +5,7 @@ module.exports = shipit => {
   
     const appName = 'hello';
   
+    
     shipit.initConfig({
       default: {
         deployTo: '/root/ai-vision-2',
