@@ -16,11 +16,11 @@ module.exports = shipit => {
           dirs: ['node_modules']
         },
         default: {
-          timeout: (60000 * 20) // set the default timeout to 60 seconds (in milliseconds)
+          timeout: (60000 * 20)
         }
       },
       production: {
-        servers: 'root@46.19.64.200'
+        servers: 'root@188.225.77.3'
       }
     });
   
