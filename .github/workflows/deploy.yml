@@ -27,4 +27,5 @@ jobs:
           cd /root/ai-vision
           git pull origin master
           cd /root/ai-vision/controller-microservice
+          npm i
           npm run build
