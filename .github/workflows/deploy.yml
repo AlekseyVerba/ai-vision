@@ -26,5 +26,5 @@ jobs:
         script: |
           cd {{env.PATH_FOLDER}}
           git pull origin master
-          cd {{env.PATH_FOLDER}}/controller-microservice
+          cd /root/ai-vision/controller-microservice
           npm run build
