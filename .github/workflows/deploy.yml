@@ -29,3 +29,17 @@ jobs:
           cd /root/ai-vision/controller-microservice
           npm i
           npm run build
+          pm2 delete controller3 -s  || :
+          pm2 start /root/ai-vision/controller-microservice/dist/main.js --name controller3
+
+          cd /root/ai-vision/database-microservice
+          npm i
+          npm run build
+          pm2 delete database3 -s  || :
+          pm2 start /root/ai-vision/database-microservice/dist/main.js --name database3
+
+          cd /root/ai-vision/mailer-microservice
+          npm i
+          npm run build
+          pm2 delete mailer3 -s  || :
+          pm2 start /root/ai-vision/mailer-microservice/dist/main.js --name mailer3
