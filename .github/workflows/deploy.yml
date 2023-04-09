@@ -6,7 +6,7 @@ on:
   push:
     branches: [ master ]
 env:
-  PATH_FOLDER: /root/ai-vision
+  PATH_FOLDER: /root/Vision
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -24,22 +24,11 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         port: 22
         script: |
-          cd /root/ai-vision
+          cd /root/Vision
           git pull origin master
-          cd /root/ai-vision/controller-microservice
+          cd /root/Vision
           npm i
           npm run build
-          pm2 delete controller3 -s  || :
-          pm2 start /root/ai-vision/controller-microservice/dist/main.js --name controller3
-
-          cd /root/ai-vision/database-microservice
-          npm i
-          npm run build
-          pm2 delete database3 -s  || :
-          pm2 start /root/ai-vision/database-microservice/dist/main.js --name database3
-
-          cd /root/ai-vision/mailer-microservice
-          npm i
-          npm run build
-          pm2 delete mailer3 -s  || :
-          pm2 start /root/ai-vision/mailer-microservice/dist/main.js --name mailer3
+          pm2 delete front -s  || :
+          cd ~
+          pm2 start ecosystem.config.js --name front
