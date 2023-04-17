@@ -59,7 +59,6 @@ import { GetUser } from './middlewares/get-user.middleware';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    console.log(join(__dirname, '..', '..', 'assets'));
     consumer.apply(GetUser).forRoutes('*');
   }
 }
