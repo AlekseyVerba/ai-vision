@@ -110,6 +110,9 @@ type Mutation {
   """Registration user"""
   registration(registrationData: RegistrationInput!): Success!
 
+  """Resend token"""
+  resendToken(resendTokenData: ResendTokenInput!): Success!
+
   """Reset password"""
   resetPassword(resetPasswordData: ResetPasswordInput!): Success!
 
@@ -201,6 +204,11 @@ input RegistrationInput {
   password: String!
 }
 
+input ResendTokenInput {
+  email: String!
+  type: TokenTypesEnum!
+}
+
 input ResetPasswordInput {
   email: String!
 }
@@ -213,6 +221,11 @@ type Tag {
   id: Float!
   name: String!
   projects: [Project!]!
+}
+
+enum TokenTypesEnum {
+  REGISTRATION
+  RESET_PASSWORD
 }
 
 input UpdateProjectInput {

@@ -15,6 +15,7 @@ import { ProjectModule } from './modules/project/project.module';
 import { CategoryModule } from './modules/category/category.module';
 import { UtilsModule } from './modules/utils/utils.module';
 import { TagModule } from './modules/tag/tag.module';
+import { TokenModule } from './modules/token/token.module'
 
 //MODELS
 import { User } from './models/user.model';
@@ -79,6 +80,7 @@ import { UserProjectPrivateFile } from './models/user_project_private_file.model
     CategoryModule,
     UtilsModule,
     TagModule,
+    TokenModule
   ],
   controllers: [AppController],
   providers: [AppService],

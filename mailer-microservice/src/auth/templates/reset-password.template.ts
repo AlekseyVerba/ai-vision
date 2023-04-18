@@ -8,7 +8,7 @@ export const resetPasswordTemplate = ({
   return `
         <div>
             <h3>Dear ${name},</h3><br>
-            <a href="http://localhost:3000/reset-password/${token}">link<a/>
+            <a href="${process.env.FRONT_URL || 'http://localhost:3000'}/reset-password/${token}">link<a/>
         </div>
     `;
 };

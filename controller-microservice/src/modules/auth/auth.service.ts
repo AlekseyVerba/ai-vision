@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 
 //INPUT TYPES
 import { RegistrationInput } from './inputTypes/registration.input';
@@ -16,7 +16,13 @@ export class AuthService {
   }
 
   async getUser(uid: string) {
-    return this.client.send('get-user-by-uid', uid);
+    const user = await lastValueFrom(this.client.send('get-user-by-uid', uid))
+
+    if (!user.is_active) {
+      throw new RpcException('Your account is not active');
+    }
+
+    return user;
   }
 
   async registration(dto: RegistrationInput) {

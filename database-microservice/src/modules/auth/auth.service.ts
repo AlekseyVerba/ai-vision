@@ -64,6 +64,10 @@ export class AuthService {
 
     if (!isPasswordEqual) throw new RpcException('Password is not corrected');
 
+    if (!user.is_active) {
+      throw new RpcException('Your account is not active!')
+    }
+
     const jwt_token = this.createJwtToken(user);
 
     user = user.toJSON();

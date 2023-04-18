@@ -8,7 +8,7 @@ export const registrationTemplate = ({
   return `
         <div>
             <h3>Thank you ${name}, for registration on AI-VISION</h3>
-            <a href="http://localhost:3000/sign-up/${token}">link<a/>
+            <a href="${process.env.FRONT_URL || 'http://localhost:3000'}/sign-up/${token}">link<a/>
         </div>
     `;
 };
