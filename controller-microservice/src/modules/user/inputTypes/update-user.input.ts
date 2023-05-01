@@ -28,7 +28,7 @@ export class UpdateUserInput {
   @Field({ nullable: true })
   telegram_link?: string;
 
-  @Field(() => GraphQLUpload)
+  @Field(() => GraphQLUpload, { nullable: true })
   cover?: Promise<FileUpload>;
 
   cover_path?: string;
