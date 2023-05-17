@@ -15,7 +15,8 @@ import { FileModule } from './modules/file/file.module';
 import { CategoryModule } from './modules/category/category.module';
 import { BadWordsModule } from './modules/bad-words/bad-words.module';
 import { JSZipModule } from './modules/jszip/jszip.module';
-import { TokenModule } from './modules/token/token.module'
+import { TokenModule } from './modules/token/token.module';
+import { AiModule } from './modules/ai/ai.module';
 
 //INTERFACES
 import { join } from 'path';
@@ -53,10 +54,13 @@ import { GetUser } from './middlewares/get-user.middleware';
     CategoryModule,
     BadWordsModule,
     JSZipModule,
-    TokenModule
+    TokenModule,
+    AiModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService
+  ],
   exports: [ClientsModule],
 })
 export class AppModule implements NestModule {
@@ -64,5 +68,3 @@ export class AppModule implements NestModule {
     consumer.apply(GetUser).forRoutes('*');
   }
 }
-
-

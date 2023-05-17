@@ -15,7 +15,7 @@ import { ProjectModule } from './modules/project/project.module';
 import { CategoryModule } from './modules/category/category.module';
 import { UtilsModule } from './modules/utils/utils.module';
 import { TagModule } from './modules/tag/tag.module';
-import { TokenModule } from './modules/token/token.module'
+import { TokenModule } from './modules/token/token.module';
 
 //MODELS
 import { User } from './models/user.model';
@@ -30,6 +30,9 @@ import { ProjectAvatars } from './models/project_avatars.model';
 import { ProjecFile } from './models/project_file.model';
 import { ProjecPrivateFile } from './models/project_private_file.model';
 import { UserProjectPrivateFile } from './models/user_project_private_file.model';
+import { Ai } from './models/ai.model';
+import { AiExample } from './models/ai_example.model';
+import { AiModule } from './modules/ai/ai.module';
 
 @Module({
   imports: [
@@ -67,6 +70,8 @@ import { UserProjectPrivateFile } from './models/user_project_private_file.model
         ProjecFile,
         ProjecPrivateFile,
         UserProjectPrivateFile,
+        Ai,
+        AiExample,
       ],
       autoLoadModels: true,
       synchronize: true,
@@ -80,7 +85,8 @@ import { UserProjectPrivateFile } from './models/user_project_private_file.model
     CategoryModule,
     UtilsModule,
     TagModule,
-    TokenModule
+    TokenModule,
+    AiModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -6,7 +6,28 @@ input AddDeleteFavoriteProjectInput {
   id: Int!
 }
 
+type Ai {
+  category: Category!
+  category_id: Int!
+  description: String
+  examples: [AiExample!]!
+  id: String!
+  logo: String
+  name: String!
+  site: String
+  twitter: String
+}
+
+type AiExample {
+  ai: Ai!
+  ai_id: Float!
+  id: Float!
+  type: String!
+  value: String!
+}
+
 type Category {
+  active: Boolean!
   id: Int!
   name: String!
 }
@@ -14,6 +35,20 @@ type Category {
 input ConfirmNewPasswordInput {
   password: String!
   token: String!
+}
+
+input CreateAiInput {
+  category_id: Int!
+  description: String
+
+  """Ai's examples"""
+  examples: [Upload!]
+
+  """Ai's logo"""
+  logoPath: Upload
+  name: String!
+  site: String
+  twitter: String
 }
 
 input CreateProjectInput {
@@ -43,6 +78,17 @@ input DeleteFileInput {
 
 input DeleteProjectInput {
   id: Int!
+}
+
+input GetAiInput {
+  id: String!
+}
+
+input GetAisInput {
+  category_id: Float
+  limit: Int!
+  offset: Int!
+  search: String
 }
 
 input GetNextAndPreviousProjectInput {
@@ -94,6 +140,9 @@ type Mutation {
 
   """Confirm registration"""
   confirmRegistrationToken(token: String!): UserAuth!
+
+  """Create ai"""
+  createAi(createAiData: CreateAiInput!): Ai!
 
   """Create project"""
   createProject(createProjectData: CreateProjectInput!): Project!
@@ -170,6 +219,12 @@ type ProjectPrivateFile {
 type Query {
   """Get current user"""
   checkAuth: User!
+
+  """Get an ai"""
+  getAi(getProjectData: GetAiInput!): Ai
+
+  """Get ais"""
+  getAis(aisQueryData: GetAisInput!): [Ai!]!
 
   """Get all categories"""
   getAllCategories: [Category!]!
@@ -252,7 +307,7 @@ input UpdateProjectInput {
 
 input UpdateUserInput {
   avatar: Upload!
-  cover: Upload!
+  cover: Upload
   description: String
   facebook_link: String
   instagram_link: String
@@ -280,6 +335,7 @@ type User {
   name: String
   pinterest_link: String
   projects: [Project!]!
+  role: String!
   telegram_link: String
   twitter_link: String
   uid: String!

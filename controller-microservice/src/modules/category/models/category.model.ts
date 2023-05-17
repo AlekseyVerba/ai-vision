@@ -7,4 +7,7 @@ export class Category {
 
   @Field()
   name: string;
+
+  @Field()
+  active: boolean;
 }

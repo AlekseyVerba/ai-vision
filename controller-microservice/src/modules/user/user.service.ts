@@ -11,6 +11,9 @@ import { FileService } from 'src/modules/file/file.service';
 import { UpdateUserInput } from './inputTypes/update-user.input';
 import { UpdateUserPasswordInput } from './inputTypes/update-user-password.input';
 
+//MODELS
+import { User } from './models/user.model';
+
 @Injectable()
 export class UserService {
   constructor(
@@ -107,7 +110,7 @@ export class UserService {
   }
 
   async getUserByEmail(email: string) {
-    return lastValueFrom(this.client.send('get-user-by-email', email));
+    return lastValueFrom(this.client.send<User>('get-user-by-email', email));
   }
 
   async getUserByName(name: string) {

@@ -18,6 +18,11 @@ import { Project } from './project.model';
 import { UserProjectFavorite } from './user_project_favorite.model';
 import { UserToken } from './user_token.model';
 
+export enum RolesEnum {
+  USER = 'user',
+  ADMIN = 'admin',
+}
+
 @Table({
   tableName: 'users',
   defaultScope: { attributes: { exclude: ['password'] } },
@@ -48,6 +53,12 @@ export class User extends Model<User> {
     type: DataType.TEXT,
   })
   description: string;
+
+  @Column({
+    type: DataType.TEXT,
+    defaultValue: RolesEnum.USER,
+  })
+  role: RolesEnum;
 
   @Column({
     type: DataType.TEXT,

@@ -2,6 +2,7 @@ import { Model, Table, Column, DataType, HasMany } from 'sequelize-typescript';
 
 //FOREIGN
 import { Project } from './project.model';
+import { Ai } from './ai.model';
 
 @Table({ tableName: 'categories' })
 export class Category extends Model<Category> {
@@ -19,6 +20,15 @@ export class Category extends Model<Category> {
   })
   name: string;
 
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: true,
+  })
+  active: boolean;
+
   @HasMany(() => Project)
   projects: [];
+
+  @HasMany(() => Ai)
+  ais: [];
 }

@@ -16,6 +16,8 @@ export class CategoryService {
   }
 
   async getAllCategories() {
-    return await this.categoryRepository.findAll();
+    return await this.categoryRepository.findAll({
+      order: [['active', 'DESC']],
+    });
   }
 }

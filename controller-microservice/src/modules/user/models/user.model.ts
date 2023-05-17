@@ -1,5 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
+//DECORATORS
+import { RolesEnum } from 'src/decorators/roles.decorator';
+
 //MODELS
 import { Project } from 'src/modules/project/models/project.model';
 import { UserAvatars } from './user-avatars.model';
@@ -11,6 +14,9 @@ export class User {
 
   @Field()
   email: string;
+
+  @Field()
+  role: RolesEnum;
 
   @Field({ nullable: true })
   name: string;

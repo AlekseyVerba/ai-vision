@@ -16,7 +16,7 @@ export class AuthService {
   }
 
   async getUser(uid: string) {
-    const user = await lastValueFrom(this.client.send('get-user-by-uid', uid))
+    const user = await lastValueFrom(this.client.send('get-user-by-uid', uid));
 
     if (!user.is_active) {
       throw new RpcException('Your account is not active');

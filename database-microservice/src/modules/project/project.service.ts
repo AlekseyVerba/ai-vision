@@ -7,7 +7,7 @@ import { TagService } from 'src/modules/tag/tag.service';
 
 //SEQUELIZE
 import { InjectModel } from '@nestjs/sequelize';
-import { Op } from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
 import sequelize from 'sequelize';
 
 //DTO
@@ -88,7 +88,7 @@ export class ProjectService {
     author_uid,
     category_id,
   }: GetNextAndPreviousProjectDto) {
-    const where: any = {
+    const where: WhereOptions<Project> = {
       id: {
         [Op.gt]: project_id, // assuming you have the current ID of the element
       },
@@ -101,6 +101,19 @@ export class ProjectService {
     if (category_id) {
       where.category_id = category_id;
     }
+
+    const result = await this.projectRepository.findOne({
+      where,
+      order: [
+        ['id', 'ASC'], // assuming you want to order by ID in ascending order
+      ],
+    });
+
+    if (result) return result;
+
+    where.id = {
+      [Op.lt]: project_id, // assuming you have the current ID of the element
+    };
 
     return await this.projectRepository.findOne({
       where,
@@ -128,6 +141,19 @@ export class ProjectService {
     if (category_id) {
       where.category_id = category_id;
     }
+
+    const result = await this.projectRepository.findOne({
+      where,
+      order: [
+        ['id', 'DESC'], // assuming you want to order by ID in ascending order
+      ],
+    });
+
+    if (result) return result;
+
+    where.id = {
+      [Op.gt]: project_id, // assuming you have the current ID of the element
+    };
 
     return await this.projectRepository.findOne({
       where,
@@ -511,8 +537,6 @@ export class ProjectService {
   }
 
   async getProjectPrivateFile({ uid, project_id }: GetProjectPrivateFileDto) {
-    console.log('tottottoototot');
-    console.log(uid);
     return await this.projectPrivateFileRepository.findOne({
       where: {
         project_id,
