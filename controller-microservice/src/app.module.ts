@@ -58,9 +58,7 @@ import { GetUser } from './middlewares/get-user.middleware';
     AiModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService
-  ],
+  providers: [AppService],
   exports: [ClientsModule],
 })
 export class AppModule implements NestModule {

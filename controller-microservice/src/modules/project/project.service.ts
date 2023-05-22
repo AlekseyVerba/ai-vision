@@ -11,7 +11,7 @@ import { UpdateProjectInput } from './inputTypes/update-project.input';
 import { GetProjectInput } from './inputTypes/get-project.input';
 import { GetNextAndPreviousProjectInput } from './inputTypes/get-next-and-previous-project.input';
 import { GetUserProjectByUid } from './inputTypes/get-user-projects-by-uid.input';
-import {} from './inputTypes/get-project.input'
+import { IsFavoriteInput } from './inputTypes/is-favorite.input';
 
 //SERVICES
 import { FileService } from '../file/file.service';
@@ -257,5 +257,9 @@ export class ProjectService {
     uid: string;
   }) {
     return this.fileService.createZIPWithFiles({ files, uid });
+  }
+
+  async getIsFavorite(dto: IsFavoriteInput) {
+    return lastValueFrom(this.client.send('get-is-favorite', dto));
   }
 }

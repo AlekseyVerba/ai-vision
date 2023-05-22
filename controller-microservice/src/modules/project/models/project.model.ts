@@ -46,6 +46,9 @@ export class Project {
   @Field((type) => User!)
   author: User;
 
+  @Field({ nullable: true })
+  isFavorite: boolean | null;
+
   @Field((type) => ProjectAvatars!)
   avatars: ProjectAvatars;
 

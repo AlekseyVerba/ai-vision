@@ -19,7 +19,6 @@ import { User } from '../user/models/user.model';
 import { Tag } from '../tag/models/tag.model';
 import { Category } from '../category/models/category.model';
 import { ProjectPrivateFile } from './models/project-private-file.model';
-import { ProjectOne } from './models/project-one.model'
 
 //SERVICES
 import { ProjectService } from './project.service';
@@ -37,6 +36,7 @@ import { UpdateProjectInput } from './inputTypes/update-project.input';
 import { GetProjectInput } from './inputTypes/get-project.input';
 import { GetNextAndPreviousProjectInput } from './inputTypes/get-next-and-previous-project.input';
 import { GetUserProjectByUid } from './inputTypes/get-user-projects-by-uid.input';
+import { IsFavoriteInput } from './inputTypes/is-favorite.input';
 
 //PIPES
 import { ValidationPipe } from 'src/pipes/validation.pipe';
@@ -47,16 +47,16 @@ import { Success } from '../auth/queriesTypes/succes.query';
 export class ProjectResolver {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Query((returns) => ProjectOne, { nullable: true, description: 'Get a project' })
+  @Query((returns) => Project, { nullable: true, description: 'Get a project' })
   async getProject(
     @Args('getProjectData') dto: GetProjectInput,
     @UserProperty('uid') uid: string,
   ) {
-    dto.uid = uid
+    dto.uid = uid;
     return await this.projectService.getProjectById(dto);
   }
 
-  @Query((returns) => ProjectOne, {
+  @Query((returns) => Project, {
     nullable: true,
     description: 'Get next project',
   })
@@ -64,11 +64,13 @@ export class ProjectResolver {
     @Args('getProjectData') dto: GetNextAndPreviousProjectInput,
     @UserProperty('uid') uid: string,
   ) {
-    dto.uid = uid
-    return await this.projectService.getNextProjectById(dto);
+    dto.uid = uid;
+    const project = await this.projectService.getNextProjectById(dto);
+
+    return;
   }
 
-  @Query((returns) => ProjectOne, {
+  @Query((returns) => Project, {
     nullable: true,
     description: 'Get previous project',
   })
@@ -76,7 +78,7 @@ export class ProjectResolver {
     @Args('getProjectData') dto: GetNextAndPreviousProjectInput,
     @UserProperty('uid') uid: string,
   ) {
-    dto.uid = uid
+    dto.uid = uid;
     return await this.projectService.getPreviousProjectById(dto);
   }
 
@@ -200,5 +202,13 @@ export class ProjectResolver {
   @ResolveField(() => Category, { description: "Get project's category" })
   async category(@Parent() { id }: Project) {
     return await this.projectService.getProjectCategory(id);
+  }
+
+  @ResolveField(() => Boolean)
+  async isFavorite(
+    @Parent() { id }: Project,
+    @UserProperty('uid') uid: string,
+  ) {
+    return await this.projectService.getIsFavorite({ project_id: id, uid });
   }
 }

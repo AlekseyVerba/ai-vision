@@ -7,7 +7,6 @@ import { TokenService } from './token.service';
 import { TokenResolver } from './token.resolver';
 import { AppModule } from 'src/app.module';
 
-
 @Module({
   imports: [forwardRef(() => AppModule)],
   providers: [TokenService, TokenResolver],
