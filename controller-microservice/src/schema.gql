@@ -306,7 +306,7 @@ input UpdateProjectInput {
 }
 
 input UpdateUserInput {
-  avatar: Upload!
+  avatar: Upload
   cover: Upload
   description: String
   facebook_link: String
