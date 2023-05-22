@@ -49,7 +49,7 @@ export class Project {
   @Field((type) => ProjectAvatars!)
   avatars: ProjectAvatars;
 
-  @Field((type) => [ProjectFile], { nullable: true })
+  @Field((type) => [ProjectFile])
   files: ProjectFile[];
 
   @Field((type) => [Tag])
