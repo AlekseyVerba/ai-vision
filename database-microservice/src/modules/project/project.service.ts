@@ -86,6 +86,8 @@ export class ProjectService {
   }
 
   async getIsFavorite({ project_id, uid }: IsFavoriteDto) {
+    if (!uid) return null 
+
     return !!(await this.userProjectFavoriteRepository.findOne({
       attributes: ['project_id'],
       where: {
