@@ -22,6 +22,7 @@ import { GetProjectPrivateFileDto } from './dto/get-project-private-file.dto';
 import { GetNextAndPreviousProjectDto } from './dto/get-next-and-previous-project.dto';
 import { GetUserProjectByUid } from './dto/get-user-projects-by-uid.dto';
 import { GetProjectDto } from './dto/get-project.dto'
+import { IsFavoriteDto } from './dto/get-is-favorite.dto'
 
 //ENUMS
 import { FILE_TYPE } from 'src/constants/file/file.constant';
@@ -81,25 +82,17 @@ export class ProjectService {
   }
 
   async getProjectById({ project_id, uid }: GetProjectDto) {
-    const project = await this.projectRepository.findByPk(project_id)
-
-    return await this.addIsFavorite(project, uid)
+    return await this.projectRepository.findByPk(project_id)
   }
 
-  async isUserFollowingToProject(project_id: number, user_uid: string) {
+  async getIsFavorite({ project_id, uid }: IsFavoriteDto) {
     return !!(await this.userProjectFavoriteRepository.findOne({
       attributes: ['project_id'],
       where: {
         project_id,
-        user_uid
+        user_uid: uid
       }
     }))
-  }
-
-  async addIsFavorite(project: Project, user_uid?: string) {
-    if (!user_uid) return project
-
-    return {...project.toJSON(), isFavorite: await this.isUserFollowingToProject(project.id, user_uid)}
   }
 
   async getNextProjectById({
@@ -129,18 +122,18 @@ export class ProjectService {
       ],
     });
 
-    if (result) return await this.addIsFavorite(result, uid);
+    if (result) return result
 
     where.id = {
       [Op.lt]: project_id, // assuming you have the current ID of the element
     };
 
-    return await this.addIsFavorite(await this.projectRepository.findOne({
+    return await this.projectRepository.findOne({
       where,
       order: [
         ['id', 'ASC'], // assuming you want to order by ID in ascending order
       ],
-    }), uid);
+    })
   }
 
   async getPreviousProjectById({
@@ -170,18 +163,18 @@ export class ProjectService {
       ],
     });
 
-    if (result) return await this.addIsFavorite(result, uid);
+    if (result) return result;
 
     where.id = {
       [Op.gt]: project_id, // assuming you have the current ID of the element
     };
 
-    return await this.addIsFavorite(await this.projectRepository.findOne({
+    return await this.projectRepository.findOne({
       where,
       order: [
         ['id', 'DESC'], // assuming you want to order by ID in ascending order
       ],
-    }), uid);
+    })
   }
 
   async addToFavorite({ id, uid }: AddDeleteFavoriteProjectDto) {
