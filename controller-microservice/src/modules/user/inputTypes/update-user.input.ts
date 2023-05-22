@@ -33,7 +33,7 @@ export class UpdateUserInput {
 
   cover_path?: string;
 
-  @Field(() => GraphQLUpload)
+  @Field(() => GraphQLUpload, { nullable: true })
   avatar?: Promise<FileUpload>;
 
   avatars?: {
