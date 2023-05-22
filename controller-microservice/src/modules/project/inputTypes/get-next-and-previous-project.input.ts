@@ -4,6 +4,9 @@ import { IsProjectExist } from 'src/validations/projectExists.validation';
 
 @InputType()
 export class GetNextAndPreviousProjectInput {
+  @IsEmpty()
+  uid?: string
+
   @Field((type) => Int)
   @IsProjectExist()
   project_id: number;

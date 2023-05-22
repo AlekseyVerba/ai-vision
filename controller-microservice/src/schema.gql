@@ -97,7 +97,7 @@ input GetNextAndPreviousProjectInput {
   project_id: Int!
 }
 
-input GetProjectPrivateFileInput {
+input GetProjectInput {
   project_id: Int!
 }
 
@@ -133,7 +133,7 @@ input LoginInput {
 
 type Mutation {
   """Add project to favorite projects"""
-  addToFavorite(addToFavoriteData: AddDeleteFavoriteProjectInput!): Boolean!
+  addToFavorite(addToFavoriteData: AddDeleteFavoriteProjectInput!): Success!
 
   """Confirm new password"""
   confirmNewPassword(confirmNewPasswordData: ConfirmNewPasswordInput!): Success!
@@ -151,7 +151,7 @@ type Mutation {
   deleteFile(deleteFileData: DeleteFileInput!): Boolean!
 
   """Delete project from favorite projects"""
-  deleteFromFavorite(deleteFromFavoriteData: AddDeleteFavoriteProjectInput!): Boolean!
+  deleteFromFavorite(deleteFromFavoriteData: AddDeleteFavoriteProjectInput!): Success!
 
   """Delete project"""
   deleteProject(deleteProjectData: DeleteProjectInput!): Boolean!
@@ -210,6 +210,26 @@ type ProjectFile {
   value: String!
 }
 
+type ProjectOne {
+  author: User!
+  author_uid: String!
+  avatars: ProjectAvatars!
+  category: Category!
+  category_id: Int!
+  createdAt: String!
+  description: String
+  files: [ProjectFile!]!
+  id: Int!
+  isFavorite: Boolean
+  is_active: Boolean!
+  price: Float!
+  private_file: ProjectPrivateFile
+  source: String
+  tags: [Tag!]!
+  title: String!
+  updatedAt: String!
+}
+
 type ProjectPrivateFile {
   id: Int!
   project_id: Int!
@@ -230,13 +250,13 @@ type Query {
   getAllCategories: [Category!]!
 
   """Get next project"""
-  getNextProjectById(getProjectData: GetNextAndPreviousProjectInput!): Project
+  getNextProjectById(getProjectData: GetNextAndPreviousProjectInput!): ProjectOne
 
   """Get previous project"""
-  getPreviousProjectById(getProjectData: GetNextAndPreviousProjectInput!): Project
+  getPreviousProjectById(getProjectData: GetNextAndPreviousProjectInput!): ProjectOne
 
   """Get a project"""
-  getProject(getProjectData: GetProjectPrivateFileInput!): Project
+  getProject(getProjectData: GetProjectInput!): ProjectOne
 
   """Get projects"""
   getProjects(getProjectData: GetProjectsInput!): [Project!]!

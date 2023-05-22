@@ -14,7 +14,7 @@ export class IsProjectExistsConstraint implements ValidatorConstraintInterface {
   constructor(@Inject(ProjectService) private projectService: ProjectService) {}
 
   async validate(id: number, args: ValidationArguments) {
-    return !!(await this.projectService.getProjectById(id));
+    return !!(await this.projectService.getProjectById({ project_id: id }));
   }
 
   defaultMessage(args: ValidationArguments) {

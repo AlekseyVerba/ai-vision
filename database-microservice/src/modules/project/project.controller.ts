@@ -15,6 +15,7 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import { GetProjectPrivateFileDto } from './dto/get-project-private-file.dto';
 import { GetNextAndPreviousProjectDto } from './dto/get-next-and-previous-project.dto';
 import { GetUserProjectByUid } from './dto/get-user-projects-by-uid.dto';
+import { GetProjectDto } from './dto/get-project.dto'
 
 @Controller('project')
 export class ProjectController {
@@ -76,8 +77,8 @@ export class ProjectController {
   }
 
   @MessagePattern('get-project-by-id')
-  async getProjectById(id: number) {
-    return this.projectService.getProjectById(id);
+  async getProjectById(dto: GetProjectDto) {
+    return this.projectService.getProjectById(dto);
   }
 
   @MessagePattern('get-next-project-by-id')

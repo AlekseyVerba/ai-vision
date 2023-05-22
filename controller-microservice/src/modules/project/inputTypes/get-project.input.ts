@@ -3,7 +3,7 @@ import { IsEmpty } from 'class-validator';
 import { IsProjectExist } from 'src/validations/projectExists.validation';
 
 @InputType()
-export class GetProjectPrivateFileInput {
+export class GetProjectInput {
   @IsEmpty()
   uid?: string;
 

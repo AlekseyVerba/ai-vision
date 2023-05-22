@@ -8,9 +8,10 @@ import { DeleteFileInput } from './inputTypes/delete-file.input';
 import { AddDeleteFavoriteProjectInput } from './inputTypes/add-delete-favorite-project.input';
 import { DeleteProjectInput } from './inputTypes/delete-project.input';
 import { UpdateProjectInput } from './inputTypes/update-project.input';
-import { GetProjectPrivateFileInput } from './inputTypes/get-project.input';
+import { GetProjectInput } from './inputTypes/get-project.input';
 import { GetNextAndPreviousProjectInput } from './inputTypes/get-next-and-previous-project.input';
 import { GetUserProjectByUid } from './inputTypes/get-user-projects-by-uid.input';
+import {} from './inputTypes/get-project.input'
 
 //SERVICES
 import { FileService } from '../file/file.service';
@@ -37,7 +38,7 @@ export class ProjectService {
     return lastValueFrom(this.client.send('get-user-favorite-projects', dto));
   }
 
-  async getProjectPrivateFile(dto: GetProjectPrivateFileInput) {
+  async getProjectPrivateFile(dto: GetProjectInput) {
     return lastValueFrom(this.client.send('get-project-private-file', dto));
   }
 
@@ -162,8 +163,8 @@ export class ProjectService {
     return true;
   }
 
-  async getProjectById(id: number) {
-    return lastValueFrom(this.client.send('get-project-by-id', id));
+  async getProjectById(dto: GetProjectInput) {
+    return lastValueFrom(this.client.send('get-project-by-id', dto));
   }
 
   async getNextProjectById(dto: GetNextAndPreviousProjectInput) {

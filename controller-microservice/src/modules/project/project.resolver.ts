@@ -19,6 +19,7 @@ import { User } from '../user/models/user.model';
 import { Tag } from '../tag/models/tag.model';
 import { Category } from '../category/models/category.model';
 import { ProjectPrivateFile } from './models/project-private-file.model';
+import { ProjectOne } from './models/project-one.model'
 
 //SERVICES
 import { ProjectService } from './project.service';
@@ -33,42 +34,49 @@ import { DeleteFileInput } from './inputTypes/delete-file.input';
 import { AddDeleteFavoriteProjectInput } from './inputTypes/add-delete-favorite-project.input';
 import { DeleteProjectInput } from './inputTypes/delete-project.input';
 import { UpdateProjectInput } from './inputTypes/update-project.input';
-import { GetProjectPrivateFileInput } from './inputTypes/get-project.input';
+import { GetProjectInput } from './inputTypes/get-project.input';
 import { GetNextAndPreviousProjectInput } from './inputTypes/get-next-and-previous-project.input';
 import { GetUserProjectByUid } from './inputTypes/get-user-projects-by-uid.input';
 
 //PIPES
 import { ValidationPipe } from 'src/pipes/validation.pipe';
+import { Success } from '../auth/queriesTypes/succes.query';
 
 @Resolver((of) => Project)
 @UsePipes(new ValidationPipe())
 export class ProjectResolver {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Query((returns) => Project, { nullable: true, description: 'Get a project' })
+  @Query((returns) => ProjectOne, { nullable: true, description: 'Get a project' })
   async getProject(
-    @Args('getProjectData') { project_id }: GetProjectPrivateFileInput,
+    @Args('getProjectData') dto: GetProjectInput,
+    @UserProperty('uid') uid: string,
   ) {
-    return await this.projectService.getProjectById(project_id);
+    dto.uid = uid
+    return await this.projectService.getProjectById(dto);
   }
 
-  @Query((returns) => Project, {
+  @Query((returns) => ProjectOne, {
     nullable: true,
     description: 'Get next project',
   })
   async getNextProjectById(
     @Args('getProjectData') dto: GetNextAndPreviousProjectInput,
+    @UserProperty('uid') uid: string,
   ) {
+    dto.uid = uid
     return await this.projectService.getNextProjectById(dto);
   }
 
-  @Query((returns) => Project, {
+  @Query((returns) => ProjectOne, {
     nullable: true,
     description: 'Get previous project',
   })
   async getPreviousProjectById(
     @Args('getProjectData') dto: GetNextAndPreviousProjectInput,
+    @UserProperty('uid') uid: string,
   ) {
+    dto.uid = uid
     return await this.projectService.getPreviousProjectById(dto);
   }
 
@@ -91,7 +99,7 @@ export class ProjectResolver {
     return await this.projectService.getUserFavoriteProjects(getProjectData);
   }
 
-  @Mutation((returns) => Boolean, {
+  @Mutation((returns) => Success, {
     description: 'Add project to favorite projects',
   })
   @UseGuards(AuthGuard)
@@ -103,7 +111,7 @@ export class ProjectResolver {
     return await this.projectService.addToFavorite(addToFavoriteData);
   }
 
-  @Mutation((returns) => Boolean, {
+  @Mutation((returns) => Success, {
     description: 'Delete project from favorite projects',
   })
   @UseGuards(AuthGuard)
@@ -173,7 +181,6 @@ export class ProjectResolver {
     @Parent() { id }: Project,
     @UserProperty('uid') uid: string,
   ) {
-    console.log('gdfg');
     return await this.projectService.getProjectPrivateFile({
       uid,
       project_id: id,
