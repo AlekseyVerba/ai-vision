@@ -12,4 +12,9 @@ export class TagController {
   async getProjectTags(id: number) {
     return this.tagService.getProjectTags(id);
   }
+
+  @MessagePattern('get-new-tags')
+  async getNewTags(id: string) {
+    return await this.tagService.getNewTags(id);
+  }
 }

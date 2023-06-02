@@ -204,7 +204,7 @@ export class ProjectResolver {
     return await this.projectService.getProjectCategory(id);
   }
 
-  @ResolveField(() => Boolean)
+  @ResolveField(() => Boolean, { nullable: true })
   async isFavorite(
     @Parent() { id }: Project,
     @UserProperty('uid') uid: string,

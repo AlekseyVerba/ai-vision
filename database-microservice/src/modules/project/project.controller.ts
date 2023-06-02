@@ -15,8 +15,8 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import { GetProjectPrivateFileDto } from './dto/get-project-private-file.dto';
 import { GetNextAndPreviousProjectDto } from './dto/get-next-and-previous-project.dto';
 import { GetUserProjectByUid } from './dto/get-user-projects-by-uid.dto';
-import { GetProjectDto } from './dto/get-project.dto'
-import { IsFavoriteDto } from './dto/get-is-favorite.dto'
+import { GetProjectDto } from './dto/get-project.dto';
+import { IsFavoriteDto } from './dto/get-is-favorite.dto';
 
 @Controller('project')
 export class ProjectController {
@@ -119,6 +119,6 @@ export class ProjectController {
 
   @MessagePattern('get-is-favorite')
   async getIsFavorite(dto: IsFavoriteDto) {
-    return this.projectService.getIsFavorite(dto)
+    return this.projectService.getIsFavorite(dto);
   }
 }

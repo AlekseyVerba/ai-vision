@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/sequelize';
 //MODELS
 import { Tag } from 'src/models/tag.model';
 import { Project } from 'src/models/project.model';
+import { New } from 'src/models/new.model';
 
 @Injectable()
 export class TagService {
@@ -31,6 +32,20 @@ export class TagService {
         },
         attributes: [],
       },
+    });
+  }
+
+  async getNewTags(id: string) {
+    return await this.tagRepository.findAll({
+      include: [
+        {
+          model: New,
+          where: {
+            id,
+          },
+          attributes: [],
+        },
+      ],
     });
   }
 }

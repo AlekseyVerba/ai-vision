@@ -21,8 +21,8 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import { GetProjectPrivateFileDto } from './dto/get-project-private-file.dto';
 import { GetNextAndPreviousProjectDto } from './dto/get-next-and-previous-project.dto';
 import { GetUserProjectByUid } from './dto/get-user-projects-by-uid.dto';
-import { GetProjectDto } from './dto/get-project.dto'
-import { IsFavoriteDto } from './dto/get-is-favorite.dto'
+import { GetProjectDto } from './dto/get-project.dto';
+import { IsFavoriteDto } from './dto/get-is-favorite.dto';
 
 //ENUMS
 import { FILE_TYPE } from 'src/constants/file/file.constant';
@@ -82,26 +82,26 @@ export class ProjectService {
   }
 
   async getProjectById({ project_id, uid }: GetProjectDto) {
-    return await this.projectRepository.findByPk(project_id)
+    return await this.projectRepository.findByPk(project_id);
   }
 
   async getIsFavorite({ project_id, uid }: IsFavoriteDto) {
-    if (!uid) return null 
+    if (!uid) return null;
 
     return !!(await this.userProjectFavoriteRepository.findOne({
       attributes: ['project_id'],
       where: {
         project_id,
-        user_uid: uid
-      }
-    }))
+        user_uid: uid,
+      },
+    }));
   }
 
   async getNextProjectById({
     project_id,
     author_uid,
     category_id,
-    uid
+    uid,
   }: GetNextAndPreviousProjectDto) {
     const where: WhereOptions<Project> = {
       id: {
@@ -124,7 +124,7 @@ export class ProjectService {
       ],
     });
 
-    if (result) return result
+    if (result) return result;
 
     where.id = {
       [Op.lt]: project_id, // assuming you have the current ID of the element
@@ -135,14 +135,14 @@ export class ProjectService {
       order: [
         ['id', 'ASC'], // assuming you want to order by ID in ascending order
       ],
-    })
+    });
   }
 
   async getPreviousProjectById({
     project_id,
     author_uid,
     category_id,
-    uid
+    uid,
   }: GetNextAndPreviousProjectDto) {
     const where: any = {
       id: {
@@ -176,7 +176,7 @@ export class ProjectService {
       order: [
         ['id', 'DESC'], // assuming you want to order by ID in ascending order
       ],
-    })
+    });
   }
 
   async addToFavorite({ id, uid }: AddDeleteFavoriteProjectDto) {
@@ -199,7 +199,7 @@ export class ProjectService {
       project_id: id,
     });
 
-    return {value: true};
+    return { value: true };
   }
 
   async deleteProject({ id, uid }: DeleteProjectDto) {

@@ -1,4 +1,4 @@
 export class IsFavoriteDto {
-    uid?: string;
-    project_id: number;
+  uid?: string;
+  project_id: number;
 }

@@ -17,6 +17,8 @@ import { UserAvatars } from './user_avatars.model';
 import { Project } from './project.model';
 import { UserProjectFavorite } from './user_project_favorite.model';
 import { UserToken } from './user_token.model';
+import { New } from './new.model';
+import { UserNewFavorite } from './user_new_favorite.model';
 
 export enum RolesEnum {
   USER = 'user',
@@ -113,6 +115,9 @@ export class User extends Model<User> {
 
   @BelongsToMany(() => Project, () => UserProjectFavorite)
   projects_favorite: Project[];
+
+  @BelongsToMany(() => New, () => UserNewFavorite)
+  news_favorite: New[];
 
   @BeforeCreate
   static async hashPassword(instance) {

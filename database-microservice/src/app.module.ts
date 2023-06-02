@@ -16,6 +16,7 @@ import { CategoryModule } from './modules/category/category.module';
 import { UtilsModule } from './modules/utils/utils.module';
 import { TagModule } from './modules/tag/tag.module';
 import { TokenModule } from './modules/token/token.module';
+import { NewModule } from './modules/new/new.module';
 
 //MODELS
 import { User } from './models/user.model';
@@ -33,6 +34,10 @@ import { UserProjectPrivateFile } from './models/user_project_private_file.model
 import { Ai } from './models/ai.model';
 import { AiExample } from './models/ai_example.model';
 import { AiModule } from './modules/ai/ai.module';
+import { New } from './models/new.model';
+import { NewFile } from './models/new_file.model';
+import { NewTag } from './models/new_tag.model';
+import { UserNewFavorite } from './models/user_new_favorite.model';
 
 @Module({
   imports: [
@@ -72,6 +77,10 @@ import { AiModule } from './modules/ai/ai.module';
         UserProjectPrivateFile,
         Ai,
         AiExample,
+        New,
+        NewFile,
+        NewTag,
+        UserNewFavorite,
       ],
       autoLoadModels: true,
       synchronize: true,
@@ -87,6 +96,7 @@ import { AiModule } from './modules/ai/ai.module';
     TagModule,
     TokenModule,
     AiModule,
+    NewModule,
   ],
   controllers: [AppController],
   providers: [AppService],

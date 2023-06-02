@@ -2,6 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AddDeleteFavoriteNewInput {
+  id: String!
+}
+
 input AddDeleteFavoriteProjectInput {
   id: Int!
 }
@@ -51,6 +55,19 @@ input CreateAiInput {
   twitter: String
 }
 
+input CreateNewInput {
+  description: String!
+
+  """news's files"""
+  files: [Upload!]
+  preview: Upload
+  shortDescription: String!
+
+  """If tag does not exist, it will be created"""
+  tags: [String!]!
+  title: String!
+}
+
 input CreateProjectInput {
   """Project's avatar"""
   avatar: Upload
@@ -76,6 +93,10 @@ input DeleteFileInput {
   id: Int!
 }
 
+input DeleteNewInput {
+  id: String!
+}
+
 input DeleteProjectInput {
   id: Int!
 }
@@ -86,6 +107,16 @@ input GetAiInput {
 
 input GetAisInput {
   category_id: Float
+  limit: Int!
+  offset: Int!
+  search: String
+}
+
+input GetNewInput {
+  id: String!
+}
+
+input GetNewsInput {
   limit: Int!
   offset: Int!
   search: String
@@ -132,6 +163,9 @@ input LoginInput {
 }
 
 type Mutation {
+  """Add new to favorite news"""
+  addNewToFavorite(addNewToFavoriteData: AddDeleteFavoriteNewInput!): Success!
+
   """Add project to favorite projects"""
   addToFavorite(addToFavoriteData: AddDeleteFavoriteProjectInput!): Success!
 
@@ -144,6 +178,9 @@ type Mutation {
   """Create ai"""
   createAi(createAiData: CreateAiInput!): Ai!
 
+  """Create new"""
+  createNew(createNewData: CreateNewInput!): New!
+
   """Create project"""
   createProject(createProjectData: CreateProjectInput!): Project!
 
@@ -152,6 +189,12 @@ type Mutation {
 
   """Delete project from favorite projects"""
   deleteFromFavorite(deleteFromFavoriteData: AddDeleteFavoriteProjectInput!): Success!
+
+  """Delete new"""
+  deleteNew(deleteNewData: DeleteNewInput!): Success!
+
+  """Delete new from favorite news"""
+  deleteNewFromFavorite(deleteNewFromFavoriteData: AddDeleteFavoriteNewInput!): Success!
 
   """Delete project"""
   deleteProject(deleteProjectData: DeleteProjectInput!): Boolean!
@@ -173,6 +216,27 @@ type Mutation {
 
   """Update user password"""
   updateUserPassword(updateUserPasswordData: UpdateUserPasswordInput!): Success!
+}
+
+type New {
+  createdAt: String!
+  description: String!
+  files: [NewFile!]!
+  id: String!
+  isFavorite: Boolean
+  preview: String
+  shortDescription: String!
+  tags: [Tag!]!
+  title: String!
+  updatedAt: String!
+}
+
+type NewFile {
+  id: Int!
+  new: New!
+  new_id: String!
+  type: String!
+  value: String!
 }
 
 type Project {
@@ -230,6 +294,12 @@ type Query {
   """Get all categories"""
   getAllCategories: [Category!]!
 
+  """Get new"""
+  getNew(newQueryData: GetNewInput!): New!
+
+  """Get news"""
+  getNews(newsQueryData: GetNewsInput!): [New!]!
+
   """Get next project"""
   getNextProjectById(getProjectData: GetNextAndPreviousProjectInput!): Project
 
@@ -242,6 +312,9 @@ type Query {
   """Get projects"""
   getProjects(getProjectData: GetProjectsInput!): [Project!]!
   getUser(getUserData: GetUserInput!): User
+
+  """Get user favorite news"""
+  getUserFavoriteNews: [New!]!
 
   """Get user favorite projects"""
   getUserFavoriteProjects(getProjectData: GetUserProjectByUid!): [Project!]!

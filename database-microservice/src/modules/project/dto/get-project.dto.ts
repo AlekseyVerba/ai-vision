@@ -1,5 +1,4 @@
 export interface GetProjectDto {
-    uid?: string;
-    project_id: number;
-  }
-  
+  uid?: string;
+  project_id: number;
+}

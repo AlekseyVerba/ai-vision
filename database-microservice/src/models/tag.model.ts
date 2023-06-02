@@ -9,6 +9,8 @@ import {
 //FOREIGN
 import { ProjectTag } from './project_tag.model';
 import { Project } from './project.model';
+import { New } from './new.model';
+import { NewTag } from './new_tag.model';
 
 @Table({ tableName: 'tags' })
 export class Tag extends Model<Tag> {
@@ -29,4 +31,7 @@ export class Tag extends Model<Tag> {
 
   @BelongsToMany(() => Project, () => ProjectTag)
   projects: Project[];
+
+  @BelongsToMany(() => New, () => NewTag)
+  news: New[];
 }

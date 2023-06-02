@@ -17,6 +17,7 @@ import { BadWordsModule } from './modules/bad-words/bad-words.module';
 import { JSZipModule } from './modules/jszip/jszip.module';
 import { TokenModule } from './modules/token/token.module';
 import { AiModule } from './modules/ai/ai.module';
+import { NewModule } from './modules/new/new.module';
 
 //INTERFACES
 import { join } from 'path';
@@ -56,6 +57,7 @@ import { GetUser } from './middlewares/get-user.middleware';
     JSZipModule,
     TokenModule,
     AiModule,
+    NewModule,
   ],
   controllers: [AppController],
   providers: [AppService],
