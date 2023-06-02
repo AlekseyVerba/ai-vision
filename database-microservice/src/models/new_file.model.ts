@@ -48,3 +48,4 @@ export class NewFile extends Model<NewFile> {
   @BelongsTo(() => New, { onDelete: 'cascade' })
   new: New;
 }
+
