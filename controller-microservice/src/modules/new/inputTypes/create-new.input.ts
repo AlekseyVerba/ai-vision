@@ -34,9 +34,9 @@ export class CreateNewInput {
   @Field()
   @IsString({ message: "Field '$property' is string" })
   @MinLength(3, { message: "Field '$property' length must be more then 3" })
-  @MaxLength(1000, {
-    message: "Field '$property' length must be less then 1000",
-  })
+  // @MaxLength(1000, {
+  //   message: "Field '$property' length must be less then 1000",
+  // })
   @IsBadWords()
   @IsOptional()
   description: string;
