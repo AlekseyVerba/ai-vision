@@ -82,11 +82,11 @@ import { UserNewFavorite } from './models/user_new_favorite.model';
         NewTag,
         UserNewFavorite,
       ],
-      autoLoadModels: true,
-      synchronize: true,
-      sync: {
-        alter: true,
-      },
+      // autoLoadModels: true,
+      // synchronize: true,
+      // sync: {
+      //   alter: true,
+      // },
     }),
     UserModule,
     AuthModule,

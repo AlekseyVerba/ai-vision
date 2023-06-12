@@ -65,9 +65,7 @@ export class ProjectResolver {
     @UserProperty('uid') uid: string,
   ) {
     dto.uid = uid;
-    const project = await this.projectService.getNextProjectById(dto);
-
-    return;
+    return await this.projectService.getNextProjectById(dto);;
   }
 
   @Query((returns) => Project, {
