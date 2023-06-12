@@ -11,10 +11,10 @@ import * as http from 'http';
 import * as https from 'https';
 
 async function bootstrap() {
-  // const httpsOptions = {
-  //   key: readFileSync(join(__dirname, '..', 'ssl', 'private.key')),
-  //   cert: readFileSync(join(__dirname, '..', 'ssl', 'certificate.crt')),
-  // };
+  const httpsOptions = {
+    key: readFileSync(join(__dirname, '..', 'ssl', 'private.key')),
+    cert: readFileSync(join(__dirname, '..', 'ssl', 'certificate.crt')),
+  };
 
   const server = express();
 
@@ -28,7 +28,7 @@ async function bootstrap() {
   await app.init();
 
   http.createServer(server).listen(80);
-  // https.createServer(httpsOptions, server).listen(443);
+  https.createServer(httpsOptions, server).listen(443);
 }
 
 bootstrap();
