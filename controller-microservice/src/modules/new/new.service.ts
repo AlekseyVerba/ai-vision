@@ -32,7 +32,7 @@ export class NewService {
     return lastValueFrom(this.client.send<New[]>('get-news', dto));
   }
 
-  async createNew({ preview, files, ...dto }: CreateNewInput) {
+  async createNew({ preview, files, pdf ,...dto }: CreateNewInput) {
     if (preview) {
       const awaitPreview = await preview;
       const buff = await this.fileService.getBufferFromRead(awaitPreview);
@@ -45,6 +45,17 @@ export class NewService {
 
     if (files && files.length) {
       dto.filesPath = await this.uploadAiFiles({ files });
+    }
+
+    if (pdf) {
+      const awaitPdf = await pdf;
+      const buff = await this.fileService.getBufferFromRead(awaitPdf);
+
+
+      dto.pdfPath = await this.fileService.uploadFile({
+        file: { buff, filename: awaitPdf.filename },
+        dir: 'news/pdf'
+      })
     }
 
     return lastValueFrom(this.client.send<New>('create-new', dto));
@@ -74,6 +85,10 @@ export class NewService {
       oldNew.files.forEach((file) => {
         this.fileService.deleteFile(file.value);
       });
+    }
+
+    if (oldNew.pdf) {
+      this.fileService.deleteFile(oldNew.pdf)
     }
 
     return {

@@ -60,6 +60,7 @@ input CreateNewInput {
 
   """news's files"""
   files: [Upload!]
+  pdf: Upload
   preview: Upload
   shortDescription: String!
 
@@ -224,6 +225,7 @@ type New {
   files: [NewFile!]!
   id: String!
   isFavorite: Boolean
+  pdf: String
   preview: String
   shortDescription: String!
   tags: [Tag!]!

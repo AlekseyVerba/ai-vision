@@ -6,4 +6,5 @@ export interface CreateNewDTO {
   tags: string[];
   previewPath?: string;
   filesPath?: string[];
+  pdfPath?: string
 }

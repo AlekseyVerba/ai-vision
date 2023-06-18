@@ -49,6 +49,12 @@ export class New extends Model<New> {
   })
   preview: string;
 
+  @Column({
+    type: DataType.TEXT,
+    allowNull: true,
+  })
+  pdf: string;
+
   @HasMany(() => NewFile)
   files: NewFile[];
 

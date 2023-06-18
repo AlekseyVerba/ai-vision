@@ -19,6 +19,9 @@ export class New {
   description: string;
 
   @Field({ nullable: true })
+  pdf: string;
+
+  @Field({ nullable: true })
   preview: string;
 
   @Field((type) => [NewFile]!)

@@ -43,12 +43,12 @@ export class NewService {
     private userNewFavoriteRepository: typeof UserNewFavorite,
   ) {}
 
-  async createNew({ previewPath, filesPath, uid, tags, ...dto }: CreateNewDTO) {
+  async createNew({ previewPath, filesPath, uid, tags, pdfPath,...dto }: CreateNewDTO) {
     const transaction = await this.newRepository.sequelize.transaction();
 
     try {
       const newNew = await this.newRepository.create(
-        { ...dto, preview: previewPath },
+        { ...dto, preview: previewPath, pdf: pdfPath },
         { transaction },
       );
 

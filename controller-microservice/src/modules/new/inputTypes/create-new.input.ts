@@ -46,6 +46,11 @@ export class CreateNewInput {
   })
   preview: Promise<FileUpload>;
 
+  @Field(() => GraphQLUpload, {
+    nullable: true,
+  })
+  pdf: Promise<FileUpload>;
+
   @Field(() => [String], {
     description: 'If tag does not exist, it will be created',
   })
@@ -67,4 +72,6 @@ export class CreateNewInput {
   previewPath?: string;
 
   filesPath?: string[];
+
+  pdfPath?: string;
 }
