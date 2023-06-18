@@ -12,8 +12,8 @@ import * as https from 'https';
 
 async function bootstrap() {
   const httpsOptions = {
-    key: readFileSync(join(__dirname, '..', 'ssl', 'private.key')),
-    cert: readFileSync(join(__dirname, '..', 'ssl', 'certificate.crt')),
+    key: readFileSync(join(__dirname, '..', '..', 'sslcert', 'privkey.pem')),
+    cert: readFileSync(join(__dirname, '..', '..', 'sslcert', 'fullchain.pem')),
   };
 
   const server = express();
