@@ -41,9 +41,9 @@ export class NewService {
 
     @InjectModel(UserNewFavorite)
     private userNewFavoriteRepository: typeof UserNewFavorite,
-  ) {}
+  ) { }
 
-  async createNew({ previewPath, filesPath, uid, tags, pdfPath,...dto }: CreateNewDTO) {
+  async createNew({ previewPath, filesPath, uid, tags, pdfPath, ...dto }: CreateNewDTO) {
     const transaction = await this.newRepository.sequelize.transaction();
 
     try {
@@ -144,17 +144,19 @@ export class NewService {
     return { value: true };
   }
 
-  async getNews({ limit, offset, search }: GetNewsDto) {
-    return await this.newRepository.findAll({
+  async getNews({ limit, offset, search  = ''}: GetNewsDto) {
+
+    const subquery = await this.newRepository.findAll({
+      attributes: ['id'],
       where: {
         [Op.or]: [
           {
             title: {
-              [Op.iLike]: `%${search || ''}%`,
+              [Op.iLike]: `%${search}%`,
             },
           },
           sequelize.where(sequelize.col('tags.name'), {
-            [Op.iLike]: `%${search || ''}%`,
+            [Op.iLike]: `%${search}%`,
           }),
         ],
       },
@@ -162,14 +164,23 @@ export class NewService {
         {
           model: Tag,
           required: false,
-          attributes: [],
+          attributes: ['name'],
           through: {
             attributes: [],
           },
-        },
+        }
       ],
       order: [['createdAt', 'DESC']],
-      subQuery: false,
+      subQuery: false
+    });
+
+    const ids = subquery.map((newObj) => newObj.id);
+
+    return await this.newRepository.findAll({
+      where: {
+        id: ids
+      },
+      order: [['createdAt', 'DESC']],
       limit,
       offset,
     });
