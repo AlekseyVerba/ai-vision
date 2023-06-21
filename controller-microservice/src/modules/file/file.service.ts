@@ -35,7 +35,7 @@ export class FileService {
     file: { stream: Stream; filename: string };
     dir: string;
   }): Promise<string> {
-    const type = file.filename.split('.').pop();
+    const type = 'webp';
     const newNameFile = uuidv4();
 
     const fullPathDir = join(this.pathDir, dir);
@@ -45,10 +45,18 @@ export class FileService {
     }
 
     const fullPathFile = join(fullPathDir, `${newNameFile}.${type}`);
+    var transformer = sharp()
+      .webp({
+        effort: 1,
+      })
+      .toFile(fullPathFile, function (err) {
+        if (err)
+          console.log(err);
+      })
 
     return new Promise((resolve, reject) => {
       file.stream
-        .pipe(createWriteStream(fullPathFile))
+        .pipe(transformer)
         .on('finish', () => {
           resolve(join(dir, `${newNameFile}.${type}`));
         })
@@ -78,6 +86,41 @@ export class FileService {
       await promises.writeFile(fullPathFile, file.buff);
 
       return join(dir, `${newNameFile}.${type}`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async uploadFileToWebp({
+    file,
+    dir,
+  }: {
+    file: { buff: Buffer; filename: string };
+    dir: string;
+  }) {
+    try {
+
+      const newNameFile = uuidv4();
+
+      const fullPathDir = join(this.pathDir, dir);
+
+      if (!existsSync(fullPathDir)) {
+        mkdirSync(fullPathDir, { recursive: true });
+      }
+
+      const fullPathFile = join(fullPathDir, `${newNameFile}.webp`);
+
+      await sharp(file.buff)
+        .webp({
+          effort: 1,
+        })
+        .toFile(fullPathFile, function (err) {
+          if (err)
+            console.log(err);
+        })
+
+
+      return join(dir, `${newNameFile}.webp`);
     } catch (error) {
       console.log(error);
     }
@@ -117,7 +160,6 @@ export class FileService {
       filename: string;
     },
     dir: string,
-    quality: number,
     resizeOptions: {
       width?: number;
       height?: number;
@@ -128,13 +170,16 @@ export class FileService {
       const newNameFile = uuidv4();
 
       await sharp(file.buff)
-        .jpeg({ quality })
+        .webp({
+          effort: 1,
+        })
         .resize(resizeOptions)
-        .toFile(join(this.pathDir, dir, newNameFile + '.jpg'), (err, inf) => {
+        .toFile(join(this.pathDir, dir, newNameFile + '.webp'), (err, inf) => {
           console.log(err);
           console.log(inf);
         });
-      return join(dir, newNameFile + '.jpg');
+
+      return join(dir, newNameFile + '.webp');
     } catch (err) {
       console.log(err);
     }

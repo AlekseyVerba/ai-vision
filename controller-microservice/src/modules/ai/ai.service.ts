@@ -45,7 +45,7 @@ export class AiService {
       const awaitLogo = await logoPath;
       const buff = await this.fileService.getBufferFromRead(awaitLogo);
 
-      dto.logo = await this.fileService.uploadFile({
+      dto.logo = await this.fileService.uploadFileToWebp({
         file: { buff, filename: awaitLogo.filename },
         dir: `ai/logos`,
       });

@@ -37,7 +37,7 @@ export class NewService {
       const awaitPreview = await preview;
       const buff = await this.fileService.getBufferFromRead(awaitPreview);
 
-      dto.previewPath = await this.fileService.uploadFile({
+      dto.previewPath = await this.fileService.uploadFileToWebp({
         file: { buff, filename: awaitPreview.filename },
         dir: `news/previews`,
       });

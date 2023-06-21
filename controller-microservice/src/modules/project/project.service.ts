@@ -206,14 +206,13 @@ export class ProjectService {
     const buff = await this.fileService.getBufferFromRead(normalAvatar);
 
     const [defaultImage, middle] = await Promise.all([
-      this.fileService.uploadFile({
+      this.fileService.uploadFileToWebp({
         file: { buff, filename: normalAvatar.filename },
         dir: `user/${uid}/projects`,
       }),
       this.fileService.createResizedImage(
         { buff, filename: normalAvatar.filename },
         `user/${uid}/projects`,
-        70,
         {
           height: 260,
           width: 230,

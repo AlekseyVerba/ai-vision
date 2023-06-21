@@ -38,14 +38,13 @@ export class UserService {
       }
 
       const [defaultImage, small, middle, large] = await Promise.all([
-        this.fileService.uploadFile({
+        this.fileService.uploadFileToWebp({
           file: { buff, filename: normalAvatar.filename },
           dir: `user/${dto.uid}`,
         }),
         this.fileService.createResizedImage(
           { buff, filename: normalAvatar.filename },
           `user/${dto.uid}`,
-          70,
           {
             height: 33,
             width: 33,
@@ -55,7 +54,6 @@ export class UserService {
         this.fileService.createResizedImage(
           { buff, filename: normalAvatar.filename },
           `user/${dto.uid}`,
-          70,
           {
             height: 66,
             width: 66,
@@ -65,7 +63,6 @@ export class UserService {
         this.fileService.createResizedImage(
           { buff, filename: normalAvatar.filename },
           `user/${dto.uid}`,
-          70,
           {
             height: 128,
             width: 128,
@@ -92,7 +89,7 @@ export class UserService {
         this.fileService.deleteFile(user.cover_path);
       }
 
-      dto.cover_path = await this.fileService.uploadFile({
+      dto.cover_path = await this.fileService.uploadFileToWebp({
         file: { buff, filename: normalCover.filename },
         dir: `user/${dto.uid}`,
       });
