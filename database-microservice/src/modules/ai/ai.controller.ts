@@ -12,6 +12,11 @@ import { GetAisDto } from './dto/get-ais.dto';
 export class AiController {
   constructor(private readonly aiService: AiService) {}
 
+  @MessagePattern('get-count-ais')
+  async getCountAis() {
+    return await this.aiService.getCountAis()
+  }
+
   @MessagePattern('get-ais')
   async getAis(dto: GetAisDto) {
     return await this.aiService.getAis(dto);

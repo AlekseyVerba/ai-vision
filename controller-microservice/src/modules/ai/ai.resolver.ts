@@ -45,6 +45,11 @@ export class AiResolver {
     return await this.aiService.getAi(id);
   }
 
+  @Query((returns) => Number, { nullable: false, description: 'Get counter ais' })
+  async getCountAis() {
+    return await this.aiService.getCountAis();
+  }
+
   @Mutation((returns) => Ai, { description: 'Create ai' })
   @Roles(RolesEnum.ADMIN)
   @UseGuards(AuthGuard)

@@ -26,6 +26,12 @@ export class CreateAiInput {
   @IsString({ message: "Field '$property' is string" })
   @IsOptional()
   @IsBadWords()
+  title?: string
+
+  @Field({ nullable: true })
+  @IsString({ message: "Field '$property' is string" })
+  @IsOptional()
+  @IsBadWords()
   description?: string;
 
   @Field(() => GraphQLUpload, {

@@ -32,6 +32,10 @@ export class AiService {
     private categoryRepository: typeof Category,
   ) {}
 
+  async getCountAis() {
+    return await this.aiRepository.count()
+  }
+
   async getAis({ limit, offset, category_id, search = '' }: GetAisDto) {
     const where: WhereOptions<Ai> = {
       name: {

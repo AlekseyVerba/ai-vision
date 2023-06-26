@@ -13,6 +13,9 @@ export class Ai {
   name: string;
 
   @Field({ nullable: true })
+  title?: string;
+
+  @Field({ nullable: true })
   description: string | null;
 
   @Field({ nullable: true })

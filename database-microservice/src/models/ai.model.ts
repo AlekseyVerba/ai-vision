@@ -31,6 +31,12 @@ export class Ai extends Model<Ai> {
 
   @Column({
     type: DataType.TEXT,
+    allowNull: true,
+  })
+  title: string;
+
+  @Column({
+    type: DataType.TEXT,
   })
   description: string;
 

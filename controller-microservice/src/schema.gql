@@ -19,6 +19,7 @@ type Ai {
   logo: String
   name: String!
   site: String
+  title: String
   twitter: String
 }
 
@@ -52,6 +53,7 @@ input CreateAiInput {
   logoPath: Upload
   name: String!
   site: String
+  title: String
   twitter: String
 }
 
@@ -295,6 +297,9 @@ type Query {
 
   """Get all categories"""
   getAllCategories: [Category!]!
+
+  """Get counter ais"""
+  getCountAis: Float!
 
   """Get new"""
   getNew(newQueryData: GetNewInput!): New!

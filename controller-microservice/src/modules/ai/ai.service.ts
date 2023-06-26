@@ -40,6 +40,10 @@ export class AiService {
     return lastValueFrom(this.client.send<AiExample[]>('get-ai-examples', id));
   }
 
+  async getCountAis() {
+    return lastValueFrom(this.client.send<number>('get-count-ais', {}));
+  }
+
   async createAi({ examples, logoPath, ...dto }: CreateAiInput): Promise<Ai> {
     if (logoPath) {
       const awaitLogo = await logoPath;
